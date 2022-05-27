@@ -25,7 +25,7 @@ export default function OrdersCard() {
           }
 
           return (
-            <li className="cards-item">
+            <li className="cards-item" key={item.index}>
               <div className="name">{item.name}</div>
               <div className="address">{item.address}</div>
               <div className="footer">
