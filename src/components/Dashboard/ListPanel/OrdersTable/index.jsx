@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import tableHeads from "./tableHeads";
 import ordersData from "../../../../data/orders";
 
-export default function OrdersTable(props) {
+const OrdersTable = (props) => {
   const [orders, setOrders] = useState(ordersData);
 
   return (
@@ -51,4 +51,6 @@ export default function OrdersTable(props) {
       </table>
     </div>
   );
-}
+};
+
+export default OrdersTable;

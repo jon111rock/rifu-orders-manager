@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Sidebar() {
+const Sidebar = () => {
   return (
     <nav className="sidebar">
       <label htmlFor="sidebar-switch" className="close-sidebar">
@@ -40,4 +40,6 @@ export default function Sidebar() {
       </div>
     </nav>
   );
-}
+};
+
+export default Sidebar;

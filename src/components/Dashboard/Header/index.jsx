@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Header() {
+const Header = () => {
   return (
     <div className="header">
       <label htmlFor="sidebar-switch">
@@ -16,4 +16,6 @@ export default function Header() {
       </div>
     </div>
   );
-}
+};
+
+export default Header;
