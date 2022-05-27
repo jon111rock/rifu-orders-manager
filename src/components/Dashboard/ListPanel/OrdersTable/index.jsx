@@ -1,50 +1,52 @@
-import React from "react";
+import React, { useState } from "react";
+import tableHeads from "./tableHeads";
+import ordersData from "../../../../data/orders";
 
-export default function OrdersTable() {
+export default function OrdersTable(props) {
+  const [orders, setOrders] = useState(ordersData);
+
   return (
     <div className="orders-table">
       <table>
         <thead>
           <tr>
-            <th>ORDER ID</th>
-            <th>CUSTOMER</th>
-            <th>ADDRESS</th>
-            <th>PRODUCT</th>
-            <th>DATA ORDER</th>
-            <th>STATUS</th>
+            {tableHeads.map((item, key) => {
+              return <th key={key}>{item}</th>;
+            })}
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>#9685</td>
-            <td>Bess Cooper</td>
-            <td>Indonesia</td>
-            <td>Cannubia</td>
-            <td>2021/08/08</td>
-            <td>
-              <div className="state-shipping">已出貨</div>
-            </td>
-          </tr>
-          <tr>
-            <td>#9685</td>
-            <td>Bess Cooper</td>
-            <td>Indonesia</td>
-            <td>Cannubia</td>
-            <td>2021/08/08</td>
-            <td>
-              <div className="state-prepared">準備中</div>
-            </td>
-          </tr>
-          <tr>
-            <td>#9685</td>
-            <td>Bess Cooper</td>
-            <td>Indonesia</td>
-            <td>Cannubia</td>
-            <td>2021/08/08</td>
-            <td>
-              <div className="state-completed">已完成</div>
-            </td>
-          </tr>
+          {orders.map((item) => {
+            let state = "state-prepared";
+
+            switch (item.order.state) {
+              case "準備中":
+                state = "state-prepared";
+                break;
+              case "已出貨":
+                state = "state-shipping";
+                break;
+              case "已完成":
+                state = "state-completed";
+                break;
+              default:
+                state = "";
+                break;
+            }
+
+            return (
+              <tr key={item.index}>
+                <td>{item.order.id}</td>
+                <td>{item.name}</td>
+                <td>{item.address}</td>
+                <td>{item.phone_number}</td>
+                <td>{item.order.date}</td>
+                <td>
+                  <div className={state}>{item.order.state}</div>
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>
