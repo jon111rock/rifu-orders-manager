@@ -1,49 +1,40 @@
-import React from "react";
+import React, { useState } from "react";
+import orderData from "../../../../data/orders";
 
 export default function OrdersCard() {
+  const [orders, setOrders] = useState(orderData);
+
   return (
     <div className="orders-card">
       <ul className="cards-list">
-        <li className="cards-item">
-          <div className="name">王小明</div>
-          <div className="address">桃園市</div>
-          <div className="footer">
-            <div className="date">2021/08/08</div>
-            <div className="state-completed">已完成</div>
-          </div>
-        </li>
-        <li className="cards-item">
-          <div className="name">小美</div>
-          <div className="address">新北市</div>
-          <div className="footer">
-            <div className="date">2021/09/08</div>
-            <div className="state-prepared">準備中</div>
-          </div>
-        </li>
-        <li className="cards-item">
-          <div className="name">王小明</div>
-          <div className="address">桃園市</div>
-          <div className="footer">
-            <div className="date">2021/08/08</div>
-            <div className="state-shipping">已出貨</div>
-          </div>
-        </li>
-        <li className="cards-item">
-          <div className="name">王小明</div>
-          <div className="address">桃園市</div>
-          <div className="footer">
-            <div className="date">2021/08/08</div>
-            <div className="state-prepared">準備中</div>
-          </div>
-        </li>
-        <li className="cards-item">
-          <div className="name">王小明</div>
-          <div className="address">桃園市</div>
-          <div className="footer">
-            <div className="date">2021/08/08</div>
-            <div className="state-completed">已完成</div>
-          </div>
-        </li>
+        {orders.map((item) => {
+          let state = "state-prepared";
+
+          switch (item.order.state) {
+            case "準備中":
+              state = "state-prepared";
+              break;
+            case "已出貨":
+              state = "state-shipping";
+              break;
+            case "已完成":
+              state = "state-completed";
+              break;
+            default:
+              break;
+          }
+
+          return (
+            <li className="cards-item">
+              <div className="name">{item.name}</div>
+              <div className="address">{item.address}</div>
+              <div className="footer">
+                <div className="date">{item.order.date}</div>
+                <div className={state}>{item.order.state}</div>
+              </div>
+            </li>
+          );
+        })}
       </ul>
     </div>
   );
