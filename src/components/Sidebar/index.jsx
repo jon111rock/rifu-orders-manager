@@ -1,5 +1,4 @@
 import React from "react";
-import "boxicons";
 
 export default function Sidebar() {
   return (
@@ -14,7 +13,7 @@ export default function Sidebar() {
       <div className="main">
         <ul>
           <li>
-            <i className="bx bx-home"></i>
+            <i class="bx bx-home-alt-2"></i>
             <span>Dashboard</span>
           </li>
           <li>
