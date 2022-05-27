@@ -3,7 +3,7 @@ import React from "react";
 const Header = () => {
   return (
     <div className="header">
-      <label htmlFor="sidebar-switch">
+      <label className="sidebar-switch" htmlFor="sidebar-switch">
         <i className="bx bx-menu bx-lg menu-logo"></i>
       </label>
       <h2>Order</h2>
