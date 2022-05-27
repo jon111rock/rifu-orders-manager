@@ -9,7 +9,10 @@ export default function Header() {
       <h2>Order</h2>
       <div className="notification">
         <i className="bx bx-bell bx-md"></i>
-        <div>Jack Wu</div>
+        <div className="add-order">
+          <i className="bx bx-plus bx-sm"></i>
+          <span>新增訂單</span>
+        </div>
       </div>
     </div>
   );
