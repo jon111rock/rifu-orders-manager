@@ -6,7 +6,7 @@ import OrdersCard from "./OrdersCard";
 
 export default function ListPanel() {
   return (
-    <div class="main">
+    <div className="main">
       <Pagination />
 
       <Searchbar />

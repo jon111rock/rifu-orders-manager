@@ -3,7 +3,7 @@ import React from "react";
 export default function Sidebar() {
   return (
     <nav className="sidebar">
-      <label for="sidebar-switch" className="close-sidebar">
+      <label htmlFor="sidebar-switch" className="close-sidebar">
         <i className="bx bx-x bx-md"></i>
       </label>
       <div className="header">
@@ -13,7 +13,7 @@ export default function Sidebar() {
       <div className="main">
         <ul>
           <li>
-            <i class="bx bx-home-alt-2"></i>
+            <i className="bx bx-home-alt-2"></i>
             <span>Dashboard</span>
           </li>
           <li>

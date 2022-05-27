@@ -9,7 +9,7 @@ export default function Home() {
       <input id="sidebar-switch" type="checkbox" />
       <Sidebar />
       {/* <!-- when menu open --> */}
-      <div class="sidebar-switch-panel"></div>
+      <div className="sidebar-switch-panel"></div>
       <Dashboard />
     </div>
   );

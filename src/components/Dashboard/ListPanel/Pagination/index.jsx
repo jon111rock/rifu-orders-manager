@@ -2,8 +2,8 @@ import React from "react";
 
 export default function Pagination() {
   return (
-    <div class="pagination">
-      <div class="state">
+    <div className="pagination">
+      <div className="state">
         <ul>
           <li>
             All Order <span>80</span>
@@ -19,7 +19,7 @@ export default function Pagination() {
           </li>
         </ul>
       </div>
-      <div class="showing">Showing 8 - 10 of 84 results</div>
+      <div className="showing">Showing 8 - 10 of 84 results</div>
     </div>
   );
 }

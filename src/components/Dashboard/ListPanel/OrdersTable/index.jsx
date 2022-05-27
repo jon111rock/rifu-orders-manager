@@ -2,7 +2,7 @@ import React from "react";
 
 export default function OrdersTable() {
   return (
-    <div class="orders-table">
+    <div className="orders-table">
       <table>
         <thead>
           <tr>
@@ -22,7 +22,7 @@ export default function OrdersTable() {
             <td>Cannubia</td>
             <td>2021/08/08</td>
             <td>
-              <div class="state-shipping">已出貨</div>
+              <div className="state-shipping">已出貨</div>
             </td>
           </tr>
           <tr>
@@ -32,7 +32,7 @@ export default function OrdersTable() {
             <td>Cannubia</td>
             <td>2021/08/08</td>
             <td>
-              <div class="state-prepared">準備中</div>
+              <div className="state-prepared">準備中</div>
             </td>
           </tr>
           <tr>
@@ -42,7 +42,7 @@ export default function OrdersTable() {
             <td>Cannubia</td>
             <td>2021/08/08</td>
             <td>
-              <div class="state-completed">已完成</div>
+              <div className="state-completed">已完成</div>
             </td>
           </tr>
         </tbody>

@@ -4,7 +4,7 @@ import ListPanel from "./ListPanel";
 
 export default function Dashboard() {
   return (
-    <main class="dashboard">
+    <main className="dashboard">
       <Header />
       <ListPanel />
     </main>
