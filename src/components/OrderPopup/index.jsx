@@ -1,5 +1,7 @@
 import React from "react";
 import "./style.scss";
+import OrderItem from "./OrderItem";
+import AddItem from "./AddItem";
 
 const OrderPopup = (props) => {
   const closeOrderPopup = () => {
@@ -25,32 +27,10 @@ const OrderPopup = (props) => {
             </li>
           </ul>
           <div className="orders-area">
-            <ul className="orders-list">
-              <li className="orders-item">
-                <div className="header">
-                  <h3 className="name">草莓三明治</h3>
-                  <span className="number">X 10</span>
-                </div>
-                <span className="total">$250</span>
-              </li>
-              <li className="orders-item">
-                <div className="header">
-                  <h3 className="name">草莓三明治</h3>
-                  <span className="number">X 10</span>
-                </div>
-                <span className="total">$250</span>
-              </li>
-              <li className="orders-item">
-                <div className="header">
-                  <h3 className="name">草莓三明治</h3>
-                  <span className="number">X 10</span>
-                </div>
-                <span className="total">$250</span>
-              </li>
-              <li className="add-new">
-                <h3>新增商品</h3>
-              </li>
-            </ul>
+            <div className="orders-list">
+              <OrderItem />
+              <AddItem />
+            </div>
           </div>
         </div>
         <div className="compute-group">
