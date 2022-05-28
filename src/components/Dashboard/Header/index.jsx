@@ -1,6 +1,8 @@
 import React from "react";
 
 const Header = () => {
+  const addOrder = () => {};
+
   return (
     <div className="header">
       <label className="sidebar-switch" htmlFor="sidebar-switch">
@@ -9,7 +11,7 @@ const Header = () => {
       <h2>Order</h2>
       <div className="notification">
         <i className="bx bx-bell bx-md"></i>
-        <div className="add-order">
+        <div className="add-order" onClick={addOrder}>
           <i className="bx bx-plus bx-sm"></i>
           <span>新增訂單</span>
         </div>

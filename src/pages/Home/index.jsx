@@ -1,6 +1,7 @@
 import React from "react";
 import Sidebar from "../../components/Sidebar";
 import Dashboard from "../../components/Dashboard";
+import AddOrderPopup from "../../components/AddOrderPopup";
 
 export default function Home() {
   return (
@@ -11,6 +12,7 @@ export default function Home() {
       {/* <!-- when menu open --> */}
       <Dashboard />
       <div className="sidebar-switch-panel"></div>
+      <AddOrderPopup trigger={false} />
     </div>
   );
 }
