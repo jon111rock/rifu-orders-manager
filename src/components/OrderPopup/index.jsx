@@ -1,7 +1,11 @@
 import React from "react";
 import "./style.scss";
 
-const AddOrderPopup = (props) => {
+const OrderPopup = (props) => {
+  const closeOrderPopup = () => {
+    props.setOrderPopupTrigger(false);
+  };
+
   return props.trigger ? (
     <div className="popup">
       <div className="popup-inner">
@@ -56,7 +60,9 @@ const AddOrderPopup = (props) => {
           </div>
           <div className="button-group">
             <button className="confirm">新增</button>
-            <button className="cancel">取消</button>
+            <button className="cancel" onClick={closeOrderPopup}>
+              取消
+            </button>
           </div>
         </div>
       </div>
@@ -66,4 +72,4 @@ const AddOrderPopup = (props) => {
   );
 };
 
-export default AddOrderPopup;
+export default OrderPopup;

@@ -1,7 +1,9 @@
 import React from "react";
 
-const Header = () => {
-  const addOrder = () => {};
+const Header = (props) => {
+  const openOrderPopup = () => {
+    props.setOrderPopupTrigger(true);
+  };
 
   return (
     <div className="header">
@@ -11,7 +13,7 @@ const Header = () => {
       <h2>Order</h2>
       <div className="notification">
         <i className="bx bx-bell bx-md"></i>
-        <div className="add-order" onClick={addOrder}>
+        <div className="add-order" onClick={openOrderPopup}>
           <i className="bx bx-plus bx-sm"></i>
           <span>新增訂單</span>
         </div>

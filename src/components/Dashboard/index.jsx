@@ -2,10 +2,10 @@ import React from "react";
 import Header from "./Header";
 import ListPanel from "./ListPanel";
 
-const Dashboard = () => {
+const Dashboard = (props) => {
   return (
     <main className="dashboard">
-      <Header />
+      <Header {...props} />
       <ListPanel />
     </main>
   );
