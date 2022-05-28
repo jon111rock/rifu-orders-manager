@@ -2,17 +2,10 @@ import React, { useState, useEffect, useRef } from "react";
 import "./style.scss";
 import DropDown from "../DropDown";
 
-let data = {
-  item: {
-    name: "草莓三明治",
-    price: 25,
-  },
-  count: 1,
-};
-
 const OrderItem = (props) => {
   const fieldObj = useRef();
 
+  const [id, setId] = useState();
   const [name, setName] = useState();
   const [price, setPrice] = useState();
   const [count, setCount] = useState();
@@ -38,6 +31,12 @@ const OrderItem = (props) => {
     }
   };
 
+  //delete data
+  const handleDelete = () => {
+    // console.log(props);
+    props.deleteItem(id);
+  };
+
   //updated data
   const getItemData = (data) => {
     setName(data.name);
@@ -46,9 +45,13 @@ const OrderItem = (props) => {
 
   //init state (run once)
   useEffect(() => {
-    if (props.itemData) setName(props.itemData.item.name);
-    if (props.itemData) setPrice(props.itemData.item.price);
-    if (props.itemData) setCount(props.itemData.count);
+    const { id, item, count } = props.itemData;
+    if (props.itemData) {
+      setId(id);
+      setName(item.name);
+      setPrice(item.price);
+      setCount(count);
+    }
   }, []);
 
   //compute total
@@ -86,7 +89,12 @@ const OrderItem = (props) => {
           )}
         </span>
       </div>
-      <span>${total}</span>
+      <div className="footer">
+        <div>
+          <i className="bx bx-x bx-sm" onClick={handleDelete}></i>
+        </div>
+        <div>${total}</div>
+      </div>
     </div>
   );
 };

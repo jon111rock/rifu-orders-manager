@@ -3,25 +3,23 @@ import "./style.scss";
 import OrderItem from "./OrderItem";
 import AddItem from "./AddItem";
 
-let items_temp = [
-  {
-    item: {
-      name: "草莓三明治",
-      price: "25",
-    },
-    count: 3,
-  },
-];
+let items_temp = [];
 
 const OrderPopup = (props) => {
   const [itemList, setItemList] = useState();
 
   const closeOrderPopup = () => {
     props.setOrderPopupTrigger(false);
+    setItemList([]);
   };
 
   const addNewItem = (item) => {
     setItemList([...itemList, item]);
+  };
+
+  const deleteItem = (id) => {
+    const newItems = itemList.filter((item) => item.id !== id);
+    setItemList(newItems);
   };
 
   useEffect(() => {
@@ -31,6 +29,7 @@ const OrderPopup = (props) => {
   return props.trigger ? (
     <div className="popup">
       <div className="popup-inner">
+        {/* main */}
         <div className="input-group">
           <ul className="input-field-list">
             <li className="input-field-item">
@@ -49,12 +48,20 @@ const OrderPopup = (props) => {
           <div className="orders-area">
             <div className="orders-list">
               {itemList.map((item, key) => {
-                return <OrderItem key={key} itemData={item} />;
+                return (
+                  <OrderItem
+                    key={key}
+                    itemData={item}
+                    deleteItem={deleteItem}
+                  />
+                );
               })}
               <AddItem addNewItem={addNewItem} />
             </div>
           </div>
         </div>
+
+        {/* footer */}
         <div className="compute-group">
           <div className="compute-info">
             <h3>Total</h3>

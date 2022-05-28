@@ -30,25 +30,30 @@ function DropDown(props) {
         </div>
         <div className="dropdown-items">
           <ul>
-            {itemDatas.map((item, key) => {
-              return (
-                <li
-                  key={key}
-                  onMouseDown={() => {
-                    if (props.getItemData) props.getItemData(item);
-                    if (props.addNewItem) {
-                      props.addNewItem({
-                        item: item,
-                        count: 1,
-                      });
-                    }
-                    setActive(false);
-                  }}
-                >
-                  {item.name}
-                </li>
-              );
-            })}
+            {
+              //DropDown item
+              itemDatas.map((item, key) => {
+                return (
+                  <li
+                    key={key}
+                    onMouseDown={() => {
+                      if (props.getItemData) props.getItemData(item);
+                      if (props.addNewItem) {
+                        props.addNewItem({
+                          id: Math.floor(Date.now() / 1000),
+                          item: item,
+                          count: 1,
+                        });
+                      }
+                      setActive(false);
+                    }}
+                  >
+                    <span>{item.name}</span>
+                    <span>${item.price}</span>
+                  </li>
+                );
+              })
+            }
           </ul>
         </div>
       </div>

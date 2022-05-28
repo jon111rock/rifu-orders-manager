@@ -49,6 +49,11 @@
           cursor: pointer;
           margin-bottom: 1rem;
           padding: 0.2rem;
+
+          width: 50%;
+
+          display: flex;
+          gap: 1rem;
         }
 
         li:hover {
