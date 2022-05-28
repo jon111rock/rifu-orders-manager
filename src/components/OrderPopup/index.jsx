@@ -1,12 +1,32 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./style.scss";
 import OrderItem from "./OrderItem";
 import AddItem from "./AddItem";
 
+let items_temp = [
+  {
+    item: {
+      name: "草莓三明治",
+      price: "25",
+    },
+    count: 3,
+  },
+];
+
 const OrderPopup = (props) => {
+  const [itemList, setItemList] = useState();
+
   const closeOrderPopup = () => {
     props.setOrderPopupTrigger(false);
   };
+
+  const addNewItem = (item) => {
+    setItemList([...itemList, item]);
+  };
+
+  useEffect(() => {
+    setItemList(items_temp);
+  }, []);
 
   return props.trigger ? (
     <div className="popup">
@@ -28,8 +48,10 @@ const OrderPopup = (props) => {
           </ul>
           <div className="orders-area">
             <div className="orders-list">
-              <OrderItem />
-              <AddItem />
+              {itemList.map((item, key) => {
+                return <OrderItem key={key} itemData={item} />;
+              })}
+              <AddItem addNewItem={addNewItem} />
             </div>
           </div>
         </div>

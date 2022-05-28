@@ -2,7 +2,6 @@
   cursor: pointer;
   // display: inline-block;
 
-  z-index: 3;
   .dropdown-btn {
     display: block;
     width: 100%;
@@ -14,7 +13,10 @@
     color: black;
 
     display: none;
-    position: absolute;
+    position: fixed;
+    left: 50%;
+    top: 40%;
+    transform: translate(-50%, -50%);
 
     width: 30rem;
     height: 20rem;
@@ -67,4 +69,8 @@
   .dropdown-list {
     right: 2rem;
   }
+}
+
+.z-index-2 {
+  z-index: 2;
 }
