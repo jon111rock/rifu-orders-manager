@@ -56,7 +56,7 @@ const OrderPopup = (props) => {
       className="popup"
       onClick={(e) => {
         if (clickInner.current && !clickInner.current.contains(e.target)) {
-          props.setOrderPopupTrigger(false);
+          closeOrderPopup();
         }
       }}
     >
