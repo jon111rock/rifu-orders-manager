@@ -33,7 +33,6 @@ const OrderItem = (props) => {
 
   //delete data
   const handleDelete = () => {
-    // console.log(props);
     props.deleteItem(id);
   };
 

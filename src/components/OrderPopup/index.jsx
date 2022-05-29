@@ -6,7 +6,7 @@ import AddItem from "./AddItem";
 let items_temp = [];
 
 const OrderPopup = (props) => {
-  const [itemList, setItemList] = useState();
+  const [itemList, setItemList] = useState([]);
 
   const closeOrderPopup = () => {
     props.setOrderPopupTrigger(false);
@@ -50,7 +50,7 @@ const OrderPopup = (props) => {
               {itemList.map((item, key) => {
                 return (
                   <OrderItem
-                    key={key}
+                    key={item.id}
                     itemData={item}
                     deleteItem={deleteItem}
                   />
