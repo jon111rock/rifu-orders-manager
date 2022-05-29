@@ -4,7 +4,7 @@ import Searchbar from "./Searchbar";
 import OrdersTable from "./OrdersTable";
 import OrdersCard from "./OrdersCard";
 
-export default function ListPanel() {
+const ListPanel = () => {
   return (
     <div className="main">
       <Pagination />
@@ -17,4 +17,6 @@ export default function ListPanel() {
       <OrdersCard />
     </div>
   );
-}
+};
+
+export default ListPanel;

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import orderData from "../../../../data/orders";
 
-export default function OrdersCard() {
+const OrdersCard = () => {
   const [orders, setOrders] = useState(orderData);
 
   return (
@@ -38,4 +38,6 @@ export default function OrdersCard() {
       </ul>
     </div>
   );
-}
+};
+
+export default OrdersCard;

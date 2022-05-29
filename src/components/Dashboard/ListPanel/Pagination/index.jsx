@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function Pagination() {
+const Pagination = () => {
   return (
     <div className="pagination">
       <div className="state">
@@ -22,4 +22,6 @@ export default function Pagination() {
       <div className="showing">Showing 8 - 10 of 84 results</div>
     </div>
   );
-}
+};
+
+export default Pagination;

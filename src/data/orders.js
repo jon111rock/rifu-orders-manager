@@ -1,4 +1,4 @@
-const ordersData = [
+const fakeData = [
   {
     index: 0,
     name: "謝小育",
@@ -15,7 +15,6 @@ const ordersData = [
         香濃巧克力: "9",
         新鮮蒜香奶油: "4",
       },
-      total: "$1154",
       state: "已完成",
     },
   },
@@ -35,10 +34,9 @@ const ordersData = [
         香濃巧克力: "9",
         新鮮蒜香奶油: "4",
       },
-      total: "$1154",
       state: "已出貨",
     },
   },
 ];
 
-export default ordersData;
+export default fakeData;

@@ -1,9 +1,10 @@
-import React, { useState } from "react";
+import React, { useContext } from "react";
 import tableHeads from "./tableHeads";
-import ordersData from "../../../../data/orders";
 
-export default function OrdersTable(props) {
-  const [orders, setOrders] = useState(ordersData);
+import { AppContext } from "../../../../pages/Home";
+
+const OrdersTable = (props) => {
+  const orders = useContext(AppContext).orders;
 
   return (
     <div className="orders-table">
@@ -16,39 +17,45 @@ export default function OrdersTable(props) {
           </tr>
         </thead>
         <tbody>
-          {orders.map((item) => {
-            let state = "state-prepared";
+          {orders ? (
+            orders.map((item) => {
+              let state = "state-prepared";
 
-            switch (item.order.state) {
-              case "準備中":
-                state = "state-prepared";
-                break;
-              case "已出貨":
-                state = "state-shipping";
-                break;
-              case "已完成":
-                state = "state-completed";
-                break;
-              default:
-                state = "";
-                break;
-            }
+              switch (item.order.state) {
+                case "準備中":
+                  state = "state-prepared";
+                  break;
+                case "已出貨":
+                  state = "state-shipping";
+                  break;
+                case "已完成":
+                  state = "state-completed";
+                  break;
+                default:
+                  state = "";
+                  break;
+              }
 
-            return (
-              <tr key={item.index}>
-                <td>{item.order.id}</td>
-                <td>{item.name}</td>
-                <td>{item.address}</td>
-                <td>{item.phone_number}</td>
-                <td>{item.order.date}</td>
-                <td>
-                  <div className={state}>{item.order.state}</div>
-                </td>
-              </tr>
-            );
-          })}
+              return (
+                <tr key={item.index}>
+                  <td>{item.order.id}</td>
+                  <td>{item.name}</td>
+                  <td>{item.address}</td>
+                  <td>{item.phone_number}</td>
+                  <td>{item.order.date}</td>
+                  <td>
+                    <div className={state}>{item.order.state}</div>
+                  </td>
+                </tr>
+              );
+            })
+          ) : (
+            <tr></tr>
+          )}
         </tbody>
       </table>
     </div>
   );
-}
+};
+
+export default OrdersTable;

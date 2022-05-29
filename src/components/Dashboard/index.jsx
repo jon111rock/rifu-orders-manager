@@ -2,11 +2,13 @@ import React from "react";
 import Header from "./Header";
 import ListPanel from "./ListPanel";
 
-export default function Dashboard() {
+const Dashboard = (props) => {
   return (
     <main className="dashboard">
-      <Header />
+      <Header {...props} />
       <ListPanel />
     </main>
   );
-}
+};
+
+export default Dashboard;
