@@ -10,9 +10,13 @@ const OrderItem = (props) => {
   const [price, setPrice] = useState();
   const [count, setCount] = useState();
   const [total, setTotal] = useState();
+  const [changedItem, setChangedItem] = useState();
 
   const [openCountField, setOpenCountField] = useState(false);
 
+  const { saveChange } = props;
+
+  //save count
   const save = (e) => {
     let { value } = e.target;
     value = parseInt(value);
@@ -37,26 +41,30 @@ const OrderItem = (props) => {
   };
 
   //updated data
-  const getItemData = (data) => {
-    setName(data.name);
-    setPrice(data.price);
+  const getItemData = (item) => {
+    setName(item.name);
+    setPrice(item.price);
+    setChangedItem(item);
   };
 
   //init state (run once)
   useEffect(() => {
     const { id, item, count } = props.itemData;
-    if (props.itemData) {
-      setId(id);
-      setName(item.name);
-      setPrice(item.price);
-      setCount(count);
-    }
+    if (!props.itemData) return;
+    setId(id);
+    setName(item.name);
+    setPrice(item.price);
+    setCount(count);
   }, [props.itemData]);
 
   //compute total
   useEffect(() => {
     setTotal(price * count);
   }, [count, price]);
+
+  useEffect(() => {
+    saveChange(id, changedItem, count, total);
+  }, [changedItem, count, total]);
 
   //focus input field when edit
   useEffect(() => {

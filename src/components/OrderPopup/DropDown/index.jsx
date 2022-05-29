@@ -1,14 +1,30 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import "./style.scss";
 
 const itemDatas = [
-  { name: "草莓三明治", price: 25 },
-  { name: "巧克力三明治", price: 30 },
-  { name: "抹茶厚片", price: 45 },
+  { id: 1, name: "草莓三明治", price: 25 },
+  { id: 2, name: "巧克力三明治", price: 30 },
+  { id: 3, name: "抹茶厚片", price: 45 },
 ];
 
 function DropDown(props) {
   const [active, setActive] = useState();
+
+  const handleSelectItem = (item) => {
+    if (props.getItemData) {
+      //changed item
+      props.getItemData(item);
+    } else if (props.addNewItem) {
+      //add new item
+      props.addNewItem({
+        id: Math.floor(Date.now() / 1000),
+        item: item,
+        count: 1,
+        total: item.price,
+      });
+    }
+    setActive(false);
+  };
 
   return (
     <div
@@ -32,20 +48,12 @@ function DropDown(props) {
           <ul>
             {
               //DropDown item
-              itemDatas.map((item, key) => {
+              itemDatas.map((item) => {
                 return (
                   <li
-                    key={key}
+                    key={item.id}
                     onMouseDown={() => {
-                      if (props.getItemData) props.getItemData(item);
-                      if (props.addNewItem) {
-                        props.addNewItem({
-                          id: Math.floor(Date.now() / 1000),
-                          item: item,
-                          count: 1,
-                        });
-                      }
-                      setActive(false);
+                      handleSelectItem(item);
                     }}
                   >
                     <span>{item.name}</span>
