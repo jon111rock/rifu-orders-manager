@@ -14,14 +14,14 @@
   z-index: 2;
 
   .popup-inner {
-    // position: relative;
+    position: relative;
     margin: 1rem;
     width: 100%;
     max-width: 1200px;
     background-color: #fff;
 
-    display: grid;
-    grid-template-rows: 5fr 1fr;
+    // display: grid;
+    // grid-template-rows: 6fr 1fr;
 
     font-size: 1rem;
     border-radius: 10px;
@@ -77,60 +77,42 @@
     }
 
     .compute-group {
+      display: flex;
+      justify-content: space-between;
       padding: 1rem;
-      position: relative;
 
-      .compute-info {
-        display: flex;
-        justify-content: space-between;
-        font-size: 1.2rem;
-        h3 {
-          color: gray;
-        }
-      }
-
-      .button-group {
-        position: absolute;
-        bottom: 0;
-        right: 0;
-
-        display: flex;
-        gap: 1rem;
-        justify-content: flex-end;
-        .confirm {
-          cursor: pointer;
-          font-size: 1rem;
-          border: none;
-          background-color: #036bfe;
-          color: white;
-          padding: 0.5rem 1rem;
-          border-radius: 10px;
-        }
-        .cancel {
-          cursor: pointer;
-          font-size: 1rem;
-          border: 1px solid #036bfe;
-          background-color: #fff;
-          color: #036bfe;
-          padding: 0.5rem 1rem;
-          border-radius: 10px;
-        }
-      }
-    }
-  }
-}
-
-@media (max-width: 700px) {
-  .popup {
-    align-items: stretch;
-    .popup-inner {
-      z-index: 1;
-      .input-group {
+      .right-box {
         display: flex;
         flex-direction: column;
-      }
+        justify-content: space-between;
+        gap: 1rem;
 
-      .compute-group {
+        span {
+          text-align: right;
+        }
+        .button-group {
+          display: flex;
+          gap: 1rem;
+          justify-content: flex-end;
+          .confirm {
+            cursor: pointer;
+            font-size: 1rem;
+            border: none;
+            background-color: #036bfe;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+          }
+          .cancel {
+            cursor: pointer;
+            font-size: 1rem;
+            border: 1px solid #036bfe;
+            background-color: #fff;
+            color: #036bfe;
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+          }
+        }
       }
     }
   }

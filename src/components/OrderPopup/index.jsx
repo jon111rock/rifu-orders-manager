@@ -47,7 +47,7 @@ const OrderPopup = (props) => {
           </ul>
           <div className="orders-area">
             <div className="orders-list">
-              {itemList.map((item, key) => {
+              {itemList.map((item) => {
                 return (
                   <OrderItem
                     key={item.id}
@@ -63,15 +63,15 @@ const OrderPopup = (props) => {
 
         {/* footer */}
         <div className="compute-group">
-          <div className="compute-info">
-            <h3>Total</h3>
+          <h3>Total</h3>
+          <div className="right-box">
             <span>$1000</span>
-          </div>
-          <div className="button-group">
-            <button className="confirm">新增</button>
-            <button className="cancel" onClick={closeOrderPopup}>
-              取消
-            </button>
+            <div className="button-group">
+              <button className="confirm">新增</button>
+              <button className="cancel" onClick={closeOrderPopup}>
+                取消
+              </button>
+            </div>
           </div>
         </div>
       </div>

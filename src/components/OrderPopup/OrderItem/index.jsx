@@ -51,7 +51,7 @@ const OrderItem = (props) => {
       setPrice(item.price);
       setCount(count);
     }
-  }, []);
+  }, [props.itemData]);
 
   //compute total
   useEffect(() => {
