@@ -1,9 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import "./style.scss";
 import OrderItem from "./OrderItem";
 import AddItem from "./AddItem";
-
-let items_temp = [];
 
 const OrderPopup = (props) => {
   const [itemList, setItemList] = useState([]);
@@ -35,22 +33,21 @@ const OrderPopup = (props) => {
     setItemList(newItems);
   };
 
-  const computeTotal = () => {
+  const computeTotal = useCallback(() => {
     let total = 0;
     for (let i in itemList) {
       total += itemList[i].total;
     }
     setTotal(total);
-  };
+  }, [itemList]);
 
   useEffect(() => {
-    setItemList(items_temp);
     setTotal(0);
   }, []);
 
   useEffect(() => {
     computeTotal();
-  });
+  }, [computeTotal]);
 
   return props.trigger ? (
     <div className="popup">

@@ -1,4 +1,4 @@
-const ordersData = [
+const fakeData = [
   {
     index: 0,
     name: "謝小育",
@@ -39,4 +39,4 @@ const ordersData = [
   },
 ];
 
-export default ordersData;
+export default fakeData;
