@@ -1,9 +1,11 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import "./style.scss";
 import OrderItem from "./OrderItem";
 import AddItem from "./AddItem";
 
 const OrderPopup = (props) => {
+  const clickInner = useRef();
+
   const [itemList, setItemList] = useState([]);
   const [total, setTotal] = useState();
 
@@ -50,8 +52,15 @@ const OrderPopup = (props) => {
   }, [computeTotal]);
 
   return props.trigger ? (
-    <div className="popup">
-      <div className="popup-inner">
+    <div
+      className="popup"
+      onClick={(e) => {
+        if (clickInner.current && !clickInner.current.contains(e.target)) {
+          props.setOrderPopupTrigger(false);
+        }
+      }}
+    >
+      <div ref={clickInner} className="popup-inner">
         {/* main */}
         <div className="input-group">
           <ul className="input-field-list">
