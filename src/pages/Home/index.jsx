@@ -12,6 +12,7 @@ export default function Home() {
   const [orderPopupTrigger, setOrderPopupTrigger] = useState(false);
   const [ordersData, setOrdersData] = useState();
   const [currentSelectedOrder, setCurrentSelectedOrder] = useState();
+  const [isUpdateExistOrder, setIsUpdateExistOrder] = useState(false);
 
   const fetechOrdersData = () => {
     //get data from http
@@ -28,6 +29,7 @@ export default function Home() {
 
     setCurrentSelectedOrder(selectedItem);
     setOrderPopupTrigger(true);
+    setIsUpdateExistOrder(true);
   };
 
   useEffect(() => {
@@ -50,6 +52,9 @@ export default function Home() {
           trigger={orderPopupTrigger}
           setOrderPopupTrigger={setOrderPopupTrigger}
           currentSelectedOrder={currentSelectedOrder}
+          setCurrentSelectedOrder={setCurrentSelectedOrder}
+          isUpdateExistOrder={isUpdateExistOrder}
+          setIsUpdateExistOrder={setIsUpdateExistOrder}
         />
       </AppContext.Provider>
     </div>

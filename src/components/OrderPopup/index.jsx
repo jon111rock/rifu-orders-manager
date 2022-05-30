@@ -33,6 +33,8 @@ const OrderPopup = (props) => {
     setTotal();
 
     setOrderPopupTrigger(false);
+    props.setCurrentSelectedOrder(undefined);
+    props.setIsUpdateExistOrder(false);
   };
 
   const addNewItem = (item) => {
@@ -64,7 +66,7 @@ const OrderPopup = (props) => {
     setTotal(total);
   }, [itemList]);
 
-  const handleUploadOrder = () => {
+  const handleSaveOrder = () => {
     //http request
     //...
     //fake data
@@ -90,15 +92,35 @@ const OrderPopup = (props) => {
       remaining_funds: total - 100,
     };
 
-    fakeData.push(newOrder);
+    console.log(props.isUpdateExistOrder);
+    if (props.isUpdateExistOrder) {
+      //update data
+      const { index } = props.currentSelectedOrder;
+      for (let i in fakeData) {
+        console.log(fakeData[i]);
+        if (fakeData[i].index === index) {
+          fakeData[i].name = name;
+          fakeData[i].address = address;
+          fakeData[i].phone_number = phoneNumber;
+          fakeData[i].order.date = orderDate;
+          fakeData[i].order.completed_date = completedDate;
+          fakeData[i].order.content = itemList;
+        }
+      }
+    } else {
+      //create data
+      fakeData.push(newOrder);
+    }
+
     console.log("success");
-    setOrderPopupTrigger(false);
+    closeOrderPopup();
   };
 
   useEffect(() => {
     setTotal(0);
   }, []);
 
+  // update exist order
   useEffect(() => {
     if (!props.currentSelectedOrder) return;
     setName(props.currentSelectedOrder.name);
@@ -213,7 +235,7 @@ const OrderPopup = (props) => {
           <div className="right-box">
             <span>${total}</span>
             <div className="button-group">
-              <button className="confirm" onClick={handleUploadOrder}>
+              <button className="confirm" onClick={handleSaveOrder}>
                 儲存
               </button>
               <button className="cancel" onClick={closeOrderPopup}>
