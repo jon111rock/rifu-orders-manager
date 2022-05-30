@@ -100,6 +100,17 @@ const OrderPopup = (props) => {
   }, []);
 
   useEffect(() => {
+    if (!props.currentSelectedOrder) return;
+    setName(props.currentSelectedOrder.name);
+    setAddress(props.currentSelectedOrder.address);
+    setPhoneNumber(props.currentSelectedOrder.phone_number);
+    setOrderDate(props.currentSelectedOrder.order.date);
+    setCompletedDate(props.currentSelectedOrder.order.completed_date);
+    setOrderType(props.currentSelectedOrder.order.type);
+    setItemList(props.currentSelectedOrder.order.content);
+  }, [props.currentSelectedOrder]);
+
+  useEffect(() => {
     computeTotal();
   }, [computeTotal]);
 
@@ -123,6 +134,7 @@ const OrderPopup = (props) => {
                 onChange={(e) => {
                   setName(e.target.value);
                 }}
+                defaultValue={name}
               />
             </li>
             <li className="input-field-item cst-input">
@@ -132,6 +144,7 @@ const OrderPopup = (props) => {
                 onChange={(e) => {
                   setAddress(e.target.value);
                 }}
+                defaultValue={address}
               />
             </li>
             <li className="input-field-item cst-input">
@@ -141,6 +154,7 @@ const OrderPopup = (props) => {
                 onChange={(e) => {
                   setPhoneNumber(e.target.value);
                 }}
+                defaultValue={phoneNumber}
               />
             </li>
             <li className="date-box cst-input">
@@ -151,6 +165,7 @@ const OrderPopup = (props) => {
                   onChange={(e) => {
                     setOrderDate(e.target.value);
                   }}
+                  defaultValue={orderDate}
                 />
               </div>
               <div>
@@ -160,6 +175,7 @@ const OrderPopup = (props) => {
                   onChange={(e) => {
                     setCompletedDate(e.target.value);
                   }}
+                  defaultValue={completedDate}
                 />
               </div>
             </li>
@@ -170,6 +186,7 @@ const OrderPopup = (props) => {
                 onChange={(e) => {
                   setOrderType(e.target.value);
                 }}
+                defaultValue={orderType}
               />
             </li>
           </ul>
@@ -197,7 +214,7 @@ const OrderPopup = (props) => {
             <span>${total}</span>
             <div className="button-group">
               <button className="confirm" onClick={handleUploadOrder}>
-                新增
+                儲存
               </button>
               <button className="cancel" onClick={closeOrderPopup}>
                 取消

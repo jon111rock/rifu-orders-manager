@@ -4,14 +4,18 @@ import Searchbar from "./Searchbar";
 import OrdersTable from "./OrdersTable";
 import OrdersCard from "./OrdersCard";
 
-const ListPanel = () => {
+const ListPanel = (props) => {
   return (
     <div className="main">
       <Pagination />
 
       <Searchbar />
 
-      <OrdersTable />
+      <OrdersTable
+        onClick={(selectedIndex) => {
+          props.getSelectedOrderIndex(selectedIndex);
+        }}
+      />
 
       {/* <!-- Mobile Card --> */}
       <OrdersCard />
