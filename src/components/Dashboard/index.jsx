@@ -6,7 +6,7 @@ const Dashboard = (props) => {
   return (
     <main className="dashboard">
       <Header {...props} />
-      <ListPanel />
+      <ListPanel {...props} />
     </main>
   );
 };

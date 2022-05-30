@@ -82,7 +82,7 @@ const OrderItem = (props) => {
               onBlur={(e) => save(e)}
               onKeyDown={(e) => handleKeydown(e)}
               className="edit"
-              type="text"
+              type="number"
               defaultValue={count}
             />
           ) : (

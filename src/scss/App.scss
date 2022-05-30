@@ -249,6 +249,15 @@
             background-color: $tertiary-color;
           }
         }
+
+        tbody {
+          td {
+            cursor: pointer;
+          }
+          tr:hover {
+            background-color: rgba(0, 0, 0, 0.03);
+          }
+        }
       }
     }
 
