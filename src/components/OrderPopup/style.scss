@@ -1,3 +1,16 @@
+.cst-input {
+  span {
+    color: gray;
+  }
+
+  input {
+    font-size: 1rem;
+    padding: 0.5rem;
+    border-radius: 10px;
+    border: 1px solid gray;
+  }
+}
+
 .popup {
   position: fixed;
   top: 0;
@@ -17,23 +30,26 @@
     margin: 1rem;
     width: 100%;
     max-width: 1200px;
-    height: 600px;
+    height: 700px;
     background-color: #fff;
 
     font-size: 1rem;
     border-radius: 10px;
     padding: 2rem;
 
-    display: grid;
-    grid-template-rows: 3fr 1fr;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    // gap: 1rem;
 
     overflow: auto;
     .input-group {
+      padding-bottom: 2rem;
+
       display: grid;
       grid-template-columns: 1fr 1fr;
+      grid-template-rows: 500px;
       gap: 2rem;
-
-      border-bottom: 1px solid gray;
 
       .input-field-list {
         list-style: none;
@@ -47,32 +63,33 @@
           display: grid;
           grid-template-rows: 1fr 2fr;
           gap: 0.5rem;
+        }
 
-          span {
-            color: gray;
-          }
+        .date-box {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 1rem;
 
           input {
-            font-size: 1rem;
-            padding: 0.5rem;
-            border-radius: 10px;
-            border: 1px solid gray;
+            width: 100%;
+            margin-top: 0.5rem;
           }
         }
       }
 
       .orders-area {
+        height: 100%;
         border-radius: 0 10px 10px 0;
+
+        overflow: auto;
 
         .orders-list {
           display: flex;
           flex-direction: column;
           gap: 1rem;
-
           margin-bottom: 1rem;
 
-          max-height: 400px;
-          overflow: auto;
+          // height: 400px;
         }
       }
     }
@@ -81,6 +98,8 @@
       display: flex;
       justify-content: space-between;
       padding: 1rem;
+
+      border-top: 1px solid gray;
 
       .right-box {
         display: flex;
@@ -127,11 +146,17 @@
         flex-direction: column;
 
         .orders-area {
-          .orders-list {
-            max-height: 1200px;
-          }
+          max-height: 1200px;
         }
       }
+    }
+  }
+}
+
+@media (max-height: 830px) {
+  .popup {
+    .popup-inner {
+      height: 650px;
     }
   }
 }

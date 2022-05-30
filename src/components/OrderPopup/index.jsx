@@ -3,15 +3,36 @@ import "./style.scss";
 import OrderItem from "./OrderItem";
 import AddItem from "./AddItem";
 
+//fake data
+import fakeData from "../../data/orders";
+
 const OrderPopup = (props) => {
   const clickInner = useRef();
+
+  const [name, setName] = useState();
+  const [address, setAddress] = useState();
+  const [phoneNumber, setPhoneNumber] = useState();
+  const [orderDate, setOrderDate] = useState();
+  const [completedDate, setCompletedDate] = useState("");
+  const [orderType, setOrderType] = useState();
 
   const [itemList, setItemList] = useState([]);
   const [total, setTotal] = useState();
 
+  const { setOrderPopupTrigger } = props;
+
   const closeOrderPopup = () => {
-    props.setOrderPopupTrigger(false);
+    //clearup state
+    setName();
+    setAddress();
+    setPhoneNumber();
+    setOrderDate();
+    setCompletedDate();
+    setOrderType();
     setItemList([]);
+    setTotal();
+
+    setOrderPopupTrigger(false);
   };
 
   const addNewItem = (item) => {
@@ -43,6 +64,37 @@ const OrderPopup = (props) => {
     setTotal(total);
   }, [itemList]);
 
+  const handleUploadOrder = () => {
+    //http request
+    //...
+    //fake data
+    if (!name || !address || !phoneNumber || !orderDate || !orderType) return;
+
+    const newOrder = {
+      index: Math.floor(Date.now() / 100),
+      name: name,
+      address: address,
+      phone_number: phoneNumber,
+      order: {
+        id: `H${
+          Math.floor(Date.now() / 10000000) + Math.floor(Date.now() % 100000000)
+        }`,
+        date: orderDate,
+        completedDate: completedDate,
+        type: orderType,
+        content: itemList,
+        state: "準備中",
+      },
+      funds: total,
+      deposit: 100,
+      remaining_funds: total - 100,
+    };
+
+    fakeData.push(newOrder);
+    console.log("success");
+    setOrderPopupTrigger(false);
+  };
+
   useEffect(() => {
     setTotal(0);
   }, []);
@@ -64,17 +116,61 @@ const OrderPopup = (props) => {
         {/* main */}
         <div className="input-group">
           <ul className="input-field-list">
-            <li className="input-field-item">
+            <li className="input-field-item cst-input">
               <span>姓名</span>
-              <input type="text" />
+              <input
+                type="text"
+                onChange={(e) => {
+                  setName(e.target.value);
+                }}
+              />
             </li>
-            <li className="input-field-item">
+            <li className="input-field-item cst-input">
               <span>地址</span>
-              <input type="text" />
+              <input
+                type="text"
+                onChange={(e) => {
+                  setAddress(e.target.value);
+                }}
+              />
             </li>
-            <li className="input-field-item">
+            <li className="input-field-item cst-input">
               <span>聯絡電話</span>
-              <input type="text" />
+              <input
+                type="text"
+                onChange={(e) => {
+                  setPhoneNumber(e.target.value);
+                }}
+              />
+            </li>
+            <li className="date-box cst-input">
+              <div>
+                <span>預計出貨時間</span>
+                <input
+                  type="text"
+                  onChange={(e) => {
+                    setOrderDate(e.target.value);
+                  }}
+                />
+              </div>
+              <div>
+                <span>預計到貨時間</span>
+                <input
+                  type="text"
+                  onChange={(e) => {
+                    setCompletedDate(e.target.value);
+                  }}
+                />
+              </div>
+            </li>
+            <li className="input-field-item cst-input">
+              <span>訂單類型</span>
+              <input
+                type="text"
+                onChange={(e) => {
+                  setOrderType(e.target.value);
+                }}
+              />
             </li>
           </ul>
           <div className="orders-area">
@@ -100,7 +196,9 @@ const OrderPopup = (props) => {
           <div className="right-box">
             <span>${total}</span>
             <div className="button-group">
-              <button className="confirm">新增</button>
+              <button className="confirm" onClick={handleUploadOrder}>
+                新增
+              </button>
               <button className="cancel" onClick={closeOrderPopup}>
                 取消
               </button>
