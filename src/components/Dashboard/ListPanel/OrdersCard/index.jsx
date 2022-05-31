@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import orderData from "../../../../data/orders";
 
 const OrdersCard = () => {
-  const [orders, setOrders] = useState(orderData);
+  const [orders] = useState(orderData);
 
   return (
     <div className="orders-card">
@@ -25,9 +25,9 @@ const OrdersCard = () => {
           }
 
           return (
-            <li className="cards-item" key={item.index}>
-              <div className="name">{item.name}</div>
-              <div className="address">{item.address}</div>
+            <li className="cards-item" key={item.id}>
+              <div className="name">{item.user.name}</div>
+              <div className="address">{item.user.address}</div>
               <div className="footer">
                 <div className="date">{item.order.date}</div>
                 <div className={state}>{item.order.state}</div>

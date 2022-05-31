@@ -14,7 +14,7 @@ const OrderItem = (props) => {
 
   const [openCountField, setOpenCountField] = useState(false);
 
-  const { saveChange } = props;
+  const { saveChangedItem } = props;
 
   //save count
   const save = (e) => {
@@ -49,9 +49,9 @@ const OrderItem = (props) => {
 
   //init state (run once)
   useEffect(() => {
-    const { id, item, count } = props.itemData;
+    const { did, item, count } = props.itemData;
     if (!props.itemData) return;
-    setId(id);
+    setId(did);
     setName(item.name);
     setPrice(item.price);
     setCount(count);
@@ -63,7 +63,7 @@ const OrderItem = (props) => {
   }, [count, price]);
 
   useEffect(() => {
-    saveChange(id, changedItem, count, total);
+    saveChangedItem(id, changedItem, count, total);
   }, [changedItem, count, total]);
 
   //focus input field when edit

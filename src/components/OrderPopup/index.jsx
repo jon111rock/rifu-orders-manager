@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import "./style.scss";
 import OrderItem from "./OrderItem";
-import AddItem from "./AddItem";
+import AddItemButton from "./AddItemButton";
 import InputDropDown from "./InputDropDown";
 
 //fake data
@@ -23,7 +23,7 @@ const OrderPopup = (props) => {
 
   const { setOrderPopupTrigger } = props;
 
-  const closeOrderPopup = () => {
+  const clearFormAndClose = () => {
     //clearup state
     setName();
     setAddress();
@@ -45,9 +45,9 @@ const OrderPopup = (props) => {
     setItemList([...itemList, item]);
   };
 
-  const saveChange = (id, changedItem, count, total) => {
+  const saveChangedItem = (did, changedItem, count, total) => {
     for (let i in itemList) {
-      if (itemList[i].id === id) {
+      if (itemList[i].did === did) {
         const newList = [...itemList];
         if (changedItem) newList[i].item = changedItem;
         newList[i].count = count;
@@ -57,8 +57,8 @@ const OrderPopup = (props) => {
     }
   };
 
-  const deleteItem = (id) => {
-    const newItems = itemList.filter((item) => item.id !== id);
+  const deleteItem = (did) => {
+    const newItems = itemList.filter((item) => item.did !== did);
     setItemList(newItems);
   };
 
@@ -76,48 +76,50 @@ const OrderPopup = (props) => {
     //fake data
     if (!name || !address || !phoneNumber || !orderDate || !orderType) return;
 
-    const newOrder = {
-      index: Math.floor(Date.now() / 100),
-      name: name,
-      address: address,
-      phone_number: phoneNumber,
-      order: {
-        id: `H${
-          Math.floor(Date.now() / 10000000) + Math.floor(Date.now() % 100000000)
-        }`,
-        date: orderDate,
-        completedDate: completedDate,
-        type: orderType,
-        content: itemList,
-        state: orderState,
-      },
-      funds: total,
-      deposit: 100,
-      remaining_funds: total - 100,
-    };
-
     if (props.isUpdateExistOrder) {
       //update data
-      const { index } = props.currentSelectedOrder;
+      const { id } = props.currentSelectedOrder;
       for (let i in fakeData) {
-        if (fakeData[i].index === index) {
-          fakeData[i].name = name;
-          fakeData[i].address = address;
-          fakeData[i].phone_number = phoneNumber;
+        if (fakeData[i].id === id) {
+          fakeData[i].user.name = name;
+          fakeData[i].user.address = address;
+          fakeData[i].user.phone_number = phoneNumber;
           fakeData[i].order.date = orderDate;
           fakeData[i].order.completed_date = completedDate;
-          fakeData[i].order.content = itemList;
+          fakeData[i].order.detail = itemList;
           fakeData[i].order.state = orderState;
           fakeData[i].order.type = orderType;
         }
       }
     } else {
       //create data
+
+      const newOrder = {
+        id: Math.floor(Date.now() / 100 + 87),
+        user: {
+          uid: Math.floor(Date.now() / 100),
+          name: name,
+          address: address,
+          phone_number: phoneNumber,
+        },
+        order: {
+          oid: `H${
+            Math.floor(Date.now() / 10000000) +
+            Math.floor(Date.now() % 100000000)
+          }`,
+          date: orderDate,
+          completedDate: completedDate,
+          type: orderType,
+          detail: itemList,
+          state: orderState,
+        },
+      };
+
       fakeData.push(newOrder);
     }
 
     console.log("success");
-    closeOrderPopup();
+    clearFormAndClose();
   };
 
   useEffect(() => {
@@ -127,13 +129,13 @@ const OrderPopup = (props) => {
   // update exist order
   useEffect(() => {
     if (!props.currentSelectedOrder) return;
-    setName(props.currentSelectedOrder.name);
-    setAddress(props.currentSelectedOrder.address);
-    setPhoneNumber(props.currentSelectedOrder.phone_number);
+    setName(props.currentSelectedOrder.user.name);
+    setAddress(props.currentSelectedOrder.user.address);
+    setPhoneNumber(props.currentSelectedOrder.user.phone_number);
     setOrderDate(props.currentSelectedOrder.order.date);
     setCompletedDate(props.currentSelectedOrder.order.completed_date);
     setOrderType(props.currentSelectedOrder.order.type);
-    setItemList(props.currentSelectedOrder.order.content);
+    setItemList(props.currentSelectedOrder.order.detail);
     setOrderState(props.currentSelectedOrder.order.state);
   }, [props.currentSelectedOrder]);
 
@@ -146,7 +148,7 @@ const OrderPopup = (props) => {
       className="popup"
       onClick={(e) => {
         if (clickInner.current && !clickInner.current.contains(e.target)) {
-          closeOrderPopup();
+          clearFormAndClose();
         }
       }}
     >
@@ -232,14 +234,14 @@ const OrderPopup = (props) => {
               {itemList.map((item) => {
                 return (
                   <OrderItem
-                    key={item.id}
+                    key={item.did}
                     itemData={item}
                     deleteItem={deleteItem}
-                    saveChange={saveChange}
+                    saveChangedItem={saveChangedItem}
                   />
                 );
               })}
-              <AddItem addNewItem={addNewItem} />
+              <AddItemButton addNewItem={addNewItem} />
             </div>
           </div>
         </div>
@@ -253,7 +255,7 @@ const OrderPopup = (props) => {
               <button className="confirm" onClick={handleSaveOrder}>
                 儲存
               </button>
-              <button className="cancel" onClick={closeOrderPopup}>
+              <button className="cancel" onClick={clearFormAndClose}>
                 取消
               </button>
             </div>

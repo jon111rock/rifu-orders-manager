@@ -36,15 +36,15 @@ const OrdersTable = (props) => {
 
               return (
                 <tr
-                  key={item.index}
+                  key={item.id}
                   onClick={() => {
-                    props.onClick(item.index);
+                    props.onClick(item.id);
                   }}
                 >
-                  <td>{item.order.id}</td>
-                  <td>{item.name}</td>
-                  <td>{item.address}</td>
-                  <td>{item.phone_number}</td>
+                  <td>{item.order.oid}</td>
+                  <td>{item.user.name}</td>
+                  <td>{item.user.address}</td>
+                  <td>{item.user.phone_number}</td>
                   <td>{item.order.date}</td>
                   <td>
                     <div className={state}>{item.order.state}</div>

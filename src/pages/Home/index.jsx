@@ -25,7 +25,7 @@ export default function Home() {
     //http request
     //...
     //get one order from db
-    const selectedItem = ordersData.find((i) => i.index === selectedIndex);
+    const selectedItem = ordersData.find((i) => i.id === selectedIndex);
 
     setCurrentSelectedOrder(selectedItem);
     setOrderPopupTrigger(true);
