@@ -24,7 +24,6 @@ const ListPanel = (props) => {
   }, [selectedPage, orders]);
 
   useEffect(() => {
-    console.log("change");
     filterList();
   }, [filterList]);
 

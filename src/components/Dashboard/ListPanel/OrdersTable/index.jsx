@@ -1,7 +1,5 @@
-import React, { useContext } from "react";
+import React from "react";
 import tableHeads from "./tableHeads";
-
-import { AppContext } from "../../../../pages/Home";
 
 const OrdersTable = (props) => {
   const orders = props.displayList;
