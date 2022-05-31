@@ -8,12 +8,15 @@ const Searchbar = () => {
         <input type="text" />
       </div>
       <div className="control">
-        <div className="filter">
+        {/* <div className="filter">
           <i className="bx bx-filter bx-sm"></i>
+        </div> */}
+        <div className="revision">
+          <i class="bx bx-revision bx-sm"></i>
         </div>
-        <div className="export">
+        {/* <div className="export">
           <i className="bx bx-export bx-sm"></i>
-        </div>
+        </div> */}
       </div>
     </div>
   );

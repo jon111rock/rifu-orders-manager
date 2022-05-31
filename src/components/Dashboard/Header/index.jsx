@@ -10,7 +10,7 @@ const Header = (props) => {
       <label className="sidebar-switch" htmlFor="sidebar-switch">
         <i className="bx bx-menu bx-lg menu-logo"></i>
       </label>
-      <h2>Order</h2>
+      <h2>訂單</h2>
       <div className="notification">
         <i className="bx bx-bell bx-md"></i>
         <div className="add-order" onClick={openOrderPopup}>
