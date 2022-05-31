@@ -4,7 +4,7 @@ import tableHeads from "./tableHeads";
 import { AppContext } from "../../../../pages/Home";
 
 const OrdersTable = (props) => {
-  const orders = useContext(AppContext).orders;
+  const orders = props.displayList;
 
   return (
     <div className="orders-table">
