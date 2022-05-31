@@ -1,0 +1,45 @@
+.popup-dropdown {
+  position: relative;
+  display: inline-block;
+  color: gray;
+  .dropdown-btn {
+    cursor: pointer;
+    padding: 0.6rem;
+    width: 100%;
+    border-radius: 10px;
+    border: 1px solid gray;
+
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    color: black;
+    span {
+      color: inherit;
+    }
+  }
+  .dropdown-content {
+    width: 100%;
+    position: absolute;
+    display: none;
+    background-color: #fff;
+    border-radius: 10px;
+    border: 1px solid gray;
+    color: black;
+
+    p {
+      cursor: pointer;
+      padding: 0.5rem;
+    }
+    p:hover {
+      background-color: rgba(0, 0, 0, 0.2);
+    }
+  }
+}
+
+.dropdown-active {
+  .dropdown-content {
+    display: block;
+    z-index: 3;
+  }
+}

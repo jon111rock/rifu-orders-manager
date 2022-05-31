@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback, useRef } from "react";
 import "./style.scss";
 import OrderItem from "./OrderItem";
 import AddItem from "./AddItem";
+import InputDropDown from "./InputDropDown";
 
 //fake data
 import fakeData from "../../data/orders";
@@ -14,7 +15,8 @@ const OrderPopup = (props) => {
   const [phoneNumber, setPhoneNumber] = useState();
   const [orderDate, setOrderDate] = useState();
   const [completedDate, setCompletedDate] = useState("");
-  const [orderType, setOrderType] = useState();
+  const [orderType, setOrderType] = useState("寄送");
+  const [orderState, setOrderState] = useState("準備中");
 
   const [itemList, setItemList] = useState([]);
   const [total, setTotal] = useState();
@@ -28,7 +30,8 @@ const OrderPopup = (props) => {
     setPhoneNumber();
     setOrderDate();
     setCompletedDate();
-    setOrderType();
+    setOrderType("寄送");
+    setOrderState("準備中");
     setItemList([]);
     setTotal();
 
@@ -37,6 +40,7 @@ const OrderPopup = (props) => {
     props.setIsUpdateExistOrder(false);
   };
 
+  //orderItem
   const addNewItem = (item) => {
     setItemList([...itemList, item]);
   };
@@ -85,7 +89,7 @@ const OrderPopup = (props) => {
         completedDate: completedDate,
         type: orderType,
         content: itemList,
-        state: "準備中",
+        state: orderState,
       },
       funds: total,
       deposit: 100,
@@ -103,6 +107,8 @@ const OrderPopup = (props) => {
           fakeData[i].order.date = orderDate;
           fakeData[i].order.completed_date = completedDate;
           fakeData[i].order.content = itemList;
+          fakeData[i].order.state = orderState;
+          fakeData[i].order.type = orderType;
         }
       }
     } else {
@@ -128,6 +134,7 @@ const OrderPopup = (props) => {
     setCompletedDate(props.currentSelectedOrder.order.completed_date);
     setOrderType(props.currentSelectedOrder.order.type);
     setItemList(props.currentSelectedOrder.order.content);
+    setOrderState(props.currentSelectedOrder.order.state);
   }, [props.currentSelectedOrder]);
 
   useEffect(() => {
@@ -147,7 +154,7 @@ const OrderPopup = (props) => {
         {/* main */}
         <div className="input-group">
           <ul className="input-field-list">
-            <li className="input-field-item cst-input">
+            <li className="input-field-item popup-input">
               <span>姓名</span>
               <input
                 type="text"
@@ -157,7 +164,7 @@ const OrderPopup = (props) => {
                 defaultValue={name}
               />
             </li>
-            <li className="input-field-item cst-input">
+            <li className="input-field-item popup-input">
               <span>地址</span>
               <input
                 type="text"
@@ -167,7 +174,7 @@ const OrderPopup = (props) => {
                 defaultValue={address}
               />
             </li>
-            <li className="input-field-item cst-input">
+            <li className="input-field-item popup-input">
               <span>聯絡電話</span>
               <input
                 type="text"
@@ -177,7 +184,7 @@ const OrderPopup = (props) => {
                 defaultValue={phoneNumber}
               />
             </li>
-            <li className="date-box cst-input">
+            <li className="date-box popup-input">
               <div>
                 <span>預計出貨時間</span>
                 <input
@@ -199,14 +206,24 @@ const OrderPopup = (props) => {
                 />
               </div>
             </li>
-            <li className="input-field-item cst-input">
+            <li className="input-field-item popup-input">
               <span>訂單類型</span>
-              <input
-                type="text"
-                onChange={(e) => {
-                  setOrderType(e.target.value);
+              <InputDropDown
+                dropDownList={["寄送", "自取"]}
+                defaultState={orderType}
+                onChangeState={(state) => {
+                  setOrderType(state);
                 }}
-                defaultValue={orderType}
+              />
+            </li>
+            <li className="input-field-item popup-input">
+              <span>訂單狀態</span>
+              <InputDropDown
+                dropDownList={["準備中", "已出貨", "已完成"]}
+                defaultState={orderState}
+                onChangeState={(state) => {
+                  setOrderState(state);
+                }}
               />
             </li>
           </ul>
