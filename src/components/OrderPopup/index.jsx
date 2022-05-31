@@ -92,12 +92,10 @@ const OrderPopup = (props) => {
       remaining_funds: total - 100,
     };
 
-    console.log(props.isUpdateExistOrder);
     if (props.isUpdateExistOrder) {
       //update data
       const { index } = props.currentSelectedOrder;
       for (let i in fakeData) {
-        console.log(fakeData[i]);
         if (fakeData[i].index === index) {
           fakeData[i].name = name;
           fakeData[i].address = address;
