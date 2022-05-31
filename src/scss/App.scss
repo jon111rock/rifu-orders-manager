@@ -149,6 +149,8 @@
             padding: 0.4rem;
             border-radius: 10px;
 
+            transition: 0.2s;
+
             span {
               padding: 0.2rem;
               background-color: $primary-color;
@@ -173,7 +175,7 @@
       width: 100%;
       background-color: $primary-color;
       display: grid;
-      grid-template-columns: 10fr 1fr;
+      grid-template-columns: 20fr 1fr;
       justify-content: space-between;
       align-items: center;
       padding: 0.5rem;
@@ -211,6 +213,15 @@
 
         .filter {
           @extend %btn;
+        }
+
+        .revision {
+          @extend %btn;
+          transition: 0.3s;
+        }
+        .revision:active {
+          @extend %btn;
+          background-color: rgba(0, 0, 0, 0.1);
         }
 
         .export {
