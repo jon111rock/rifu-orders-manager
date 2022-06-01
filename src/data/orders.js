@@ -1,8 +1,8 @@
 let fakeData = [
   {
-    id: 0,
+    _id: 0,
     user: {
-      uid: 0,
+      _id: 0,
       name: "謝小育",
       address: "桃園市桃園區民安路60號",
       phone_number: "0975308911",
@@ -14,19 +14,19 @@ let fakeData = [
     state: "已完成",
     detail: [
       {
-        did: 12321312,
+        _id: 12321312,
         count: 2,
         item: {
-          iid: 1,
+          _id: 1,
           name: "草莓三明治",
           price: 25,
         },
       },
       {
-        did: 123211312,
+        _id: 123211312,
         count: 2,
         item: {
-          iid: 2,
+          _id: 2,
           name: "巧克力三明治",
           price: 30,
         },
@@ -34,9 +34,9 @@ let fakeData = [
     ],
   },
   {
-    id: 1,
+    _id: 1,
     user: {
-      uid: 1,
+      _id: 1,
       name: "王小姐",
       address: "彰化縣和美鎮彰美路三段2段B棟",
       phone_number: "0975308911",
@@ -48,19 +48,19 @@ let fakeData = [
     state: "已出貨",
     detail: [
       {
-        did: 12321312,
+        _id: 12321312,
         count: 5,
         item: {
-          iid: 1,
+          _id: 1,
           name: "草莓三明治",
           price: 25,
         },
       },
       {
-        did: 123211312,
+        _id: 123211312,
         count: 2,
         item: {
-          iid: 3,
+          _id: 3,
           name: "抹茶厚片",
           price: 45,
         },

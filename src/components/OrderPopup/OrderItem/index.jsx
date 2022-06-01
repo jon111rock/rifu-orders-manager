@@ -49,9 +49,9 @@ const OrderItem = (props) => {
 
   //init state (run once)
   useEffect(() => {
-    const { did, item, count } = props.itemData;
+    const { _id, item, count } = props.itemData;
     if (!props.itemData) return;
-    setId(did);
+    setId(_id);
     setName(item.name);
     setPrice(item.price);
     setCount(count);

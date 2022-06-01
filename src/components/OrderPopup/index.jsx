@@ -45,9 +45,9 @@ const OrderPopup = (props) => {
     setItemList([...itemList, item]);
   };
 
-  const saveChangedItem = (did, changedItem, count, total) => {
+  const saveChangedItem = (_id, changedItem, count, total) => {
     for (let i in itemList) {
-      if (itemList[i].did === did) {
+      if (itemList[i]._id === _id) {
         const newList = [...itemList];
         if (changedItem) newList[i].item = changedItem;
         newList[i].count = count;
@@ -57,8 +57,8 @@ const OrderPopup = (props) => {
     }
   };
 
-  const deleteItem = (did) => {
-    const newItems = itemList.filter((item) => item.did !== did);
+  const deleteItem = (_id) => {
+    const newItems = itemList.filter((item) => item._id !== _id);
     setItemList(newItems);
   };
 
@@ -78,9 +78,9 @@ const OrderPopup = (props) => {
 
     if (props.isUpdateExistOrder) {
       //update data
-      const { id } = props.currentSelectedOrder;
+      const { _id } = props.currentSelectedOrder;
       for (let i in fakeData) {
-        if (fakeData[i].id === id) {
+        if (fakeData[i]._id === _id) {
           fakeData[i].user.name = name;
           fakeData[i].user.address = address;
           fakeData[i].user.phone_number = phoneNumber;
@@ -95,9 +95,9 @@ const OrderPopup = (props) => {
       //create data
 
       const newOrder = {
-        id: Math.floor(Date.now() / 100 + 87),
+        _id: Math.floor(Date.now() / 100 + 87),
         user: {
-          uid: Math.floor(Date.now() / 100),
+          _id: Math.floor(Date.now() / 100),
           name: name,
           address: address,
           phone_number: phoneNumber,
@@ -232,7 +232,7 @@ const OrderPopup = (props) => {
               {itemList.map((item) => {
                 return (
                   <OrderItem
-                    key={item.did}
+                    key={item._id}
                     itemData={item}
                     deleteItem={deleteItem}
                     saveChangedItem={saveChangedItem}

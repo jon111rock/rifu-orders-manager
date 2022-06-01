@@ -36,9 +36,9 @@ const OrdersTable = (props) => {
 
               return (
                 <tr
-                  key={item.id}
+                  key={item._id}
                   onClick={() => {
-                    props.onClick(item.id);
+                    props.onClick(item._id);
                   }}
                 >
                   <td>{item.oid}</td>

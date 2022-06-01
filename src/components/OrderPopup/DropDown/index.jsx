@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import "./style.scss";
 
 const itemDatas = [
-  { iid: 1, name: "草莓三明治", price: 25 },
-  { iid: 2, name: "巧克力三明治", price: 30 },
-  { iid: 3, name: "抹茶厚片", price: 45 },
+  { _id: 1, name: "草莓三明治", price: 25 },
+  { _id: 2, name: "巧克力三明治", price: 30 },
+  { _id: 3, name: "抹茶厚片", price: 45 },
 ];
 
 function DropDown(props) {
@@ -17,7 +17,7 @@ function DropDown(props) {
     } else if (props.addNewItem) {
       //add new item
       props.addNewItem({
-        did: Math.floor(Date.now() / 1000),
+        _id: Math.floor(Date.now() / 1000),
         item: item,
         count: 1,
         total: item.price,
@@ -51,7 +51,7 @@ function DropDown(props) {
               itemDatas.map((item) => {
                 return (
                   <li
-                    key={item.iid}
+                    key={item._id}
                     onMouseDown={() => {
                       handleSelectItem(item);
                     }}

@@ -15,14 +15,15 @@ export default function Home() {
   const [currentSelectedOrder, setCurrentSelectedOrder] = useState();
   const [isUpdateExistOrder, setIsUpdateExistOrder] = useState(false);
 
-  const fetechOrdersData = () => {
+  const fetechOrdersData = async () => {
     //get data from http
     // ...
     //set Data
     // axios();
-    axios.get("http://localhost:3500/api/order").then((res) => {
-      console.log(res.data.object);
+    await axios.get("http://localhost:3500/api/order").then((res) => {
+      console.log("http", res.data.object);
     });
+    console.log("fake", fakeData);
     setOrdersData(fakeData);
   };
 
@@ -30,7 +31,7 @@ export default function Home() {
     //http request
     //...
     //get one order from db
-    const selectedItem = ordersData.find((i) => i.id === selectedIndex);
+    const selectedItem = ordersData.find((i) => i._id === selectedIndex);
 
     setCurrentSelectedOrder(selectedItem);
     setOrderPopupTrigger(true);
