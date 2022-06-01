@@ -6,6 +6,7 @@ import InputDropDown from "./InputDropDown";
 
 //fake data
 import fakeData from "../../data/orders";
+import axios from "axios";
 
 const OrderPopup = (props) => {
   const clickInner = useRef();
@@ -78,26 +79,25 @@ const OrderPopup = (props) => {
 
     if (props.isUpdateExistOrder) {
       //update data
-      const { _id } = props.currentSelectedOrder;
-      for (let i in fakeData) {
-        if (fakeData[i]._id === _id) {
-          fakeData[i].user.name = name;
-          fakeData[i].user.address = address;
-          fakeData[i].user.phone_number = phoneNumber;
-          fakeData[i].date = orderDate;
-          fakeData[i].completed_date = completedDate;
-          fakeData[i].detail = itemList;
-          fakeData[i].state = orderState;
-          fakeData[i].type = orderType;
-        }
-      }
+      // const { _id } = props.currentSelectedOrder;
+      // for (let i in fakeData) {
+      //   if (fakeData[i]._id === _id) {
+      //     fakeData[i].user.name = name;
+      //     fakeData[i].user.address = address;
+      //     fakeData[i].user.phone_number = phoneNumber;
+      //     fakeData[i].date = orderDate;
+      //     fakeData[i].completed_date = completedDate;
+      //     fakeData[i].detail = itemList;
+      //     fakeData[i].state = orderState;
+      //     fakeData[i].type = orderType;
+      //   }
+      // }
+      console.log("updated exist order");
     } else {
       //create data
 
       const newOrder = {
-        _id: Math.floor(Date.now() / 100 + 87),
         user: {
-          _id: Math.floor(Date.now() / 100),
           name: name,
           address: address,
           phone_number: phoneNumber,
@@ -109,14 +109,50 @@ const OrderPopup = (props) => {
         date: orderDate,
         completedDate: completedDate,
         type: orderType,
-        detail: itemList,
+        details: itemList, //
         state: orderState,
       };
 
-      fakeData.push(newOrder);
+      //create user
+      axios
+        .post("http://localhost:3500/api/user", newOrder.user)
+        .then((res) => {
+          console.log("create user ...", res.data.message);
+          return res.data.object._id;
+        })
+        .then((userId) => {
+          itemList.forEach((item) => {
+            axios
+              .post(`http://localhost:3500/api/detail/${userId}`, {
+                item: item.item.name,
+                count: item.count,
+              })
+              .then((res) => {
+                console.log("create details ...", res.data.message);
+              });
+          });
+
+          return userId;
+        })
+        .then((userId) => {
+          axios
+            .post(`http://localhost:3500/api/order/${userId}`, {
+              date: newOrder.date,
+              completed_date: newOrder.completedDate,
+              type: newOrder.type,
+              state: newOrder.state,
+            })
+            .then((res) => {
+              console.log("create order ...", res.data.message);
+
+              props.fetechOrdersData();
+            });
+        });
+
+      // fakeData.push(newOrder);
+      // console.log("create new order");
     }
 
-    console.log("success");
     clearFormAndClose();
   };
 
@@ -133,7 +169,7 @@ const OrderPopup = (props) => {
     setOrderDate(props.currentSelectedOrder.date);
     setCompletedDate(props.currentSelectedOrder.completed_date);
     setOrderType(props.currentSelectedOrder.type);
-    setItemList(props.currentSelectedOrder.detail);
+    setItemList(props.currentSelectedOrder.details);
     setOrderState(props.currentSelectedOrder.state);
   }, [props.currentSelectedOrder]);
 

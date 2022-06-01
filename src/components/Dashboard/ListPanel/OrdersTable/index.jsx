@@ -41,7 +41,7 @@ const OrdersTable = (props) => {
                     props.onClick(item._id);
                   }}
                 >
-                  <td>{item.oid}</td>
+                  <td>{item._id}</td>
                   <td>{item.user.name}</td>
                   <td>{item.user.address}</td>
                   <td>{item.user.phone_number}</td>

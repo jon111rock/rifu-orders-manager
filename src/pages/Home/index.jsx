@@ -15,16 +15,16 @@ export default function Home() {
   const [currentSelectedOrder, setCurrentSelectedOrder] = useState();
   const [isUpdateExistOrder, setIsUpdateExistOrder] = useState(false);
 
-  const fetechOrdersData = async () => {
+  const fetechOrdersData = () => {
     //get data from http
     // ...
     //set Data
     // axios();
-    await axios.get("http://localhost:3500/api/order").then((res) => {
-      console.log("http", res.data.object);
+    axios.get("http://localhost:3500/api/order").then((res) => {
+      // console.log(res.data.object);
+      setOrdersData(res.data.object);
     });
-    console.log("fake", fakeData);
-    setOrdersData(fakeData);
+    // console.log("fake", fakeData);
   };
 
   const getSelectedOrderIndex = (selectedIndex) => {
@@ -32,7 +32,6 @@ export default function Home() {
     //...
     //get one order from db
     const selectedItem = ordersData.find((i) => i._id === selectedIndex);
-
     setCurrentSelectedOrder(selectedItem);
     setOrderPopupTrigger(true);
     setIsUpdateExistOrder(true);
@@ -61,6 +60,7 @@ export default function Home() {
           setCurrentSelectedOrder={setCurrentSelectedOrder}
           isUpdateExistOrder={isUpdateExistOrder}
           setIsUpdateExistOrder={setIsUpdateExistOrder}
+          fetechOrdersData={fetechOrdersData}
         />
       </AppContext.Provider>
     </div>
