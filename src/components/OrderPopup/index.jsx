@@ -5,7 +5,7 @@ import AddItemButton from "./AddItemButton";
 import InputDropDown from "./InputDropDown";
 
 //fake data
-import fakeData from "../../data/orders";
+// import fakeData from "../../data/orders";
 import axios from "axios";
 
 const OrderPopup = (props) => {
@@ -71,7 +71,7 @@ const OrderPopup = (props) => {
     setTotal(total);
   }, [itemList]);
 
-  const handleSaveOrder = () => {
+  const handleSaveOrder = async () => {
     //http request
     //...
     //fake data
@@ -92,7 +92,77 @@ const OrderPopup = (props) => {
       //     fakeData[i].type = orderType;
       //   }
       // }
-      console.log("updated exist order");
+
+      const currentOrder = props.currentSelectedOrder;
+
+      // console.log(currentOrder);
+      // update user
+      try {
+        const res = await axios.patch(
+          `http://localhost:3500/api/user/${currentOrder.user._id}`,
+          {
+            name: name,
+            address: address,
+            phone_number: phoneNumber,
+          }
+        );
+        props.fetechOrdersData();
+        console.log("update user ...", res.data.message);
+      } catch (error) {
+        console.log(error.message);
+      }
+
+      // update order
+      try {
+        const res = await axios.patch(
+          `http://localhost:3500/api/order/${currentOrder._id}`,
+          {
+            date: orderDate,
+            completed_date: completedDate,
+            type: orderType,
+            state: orderState,
+          }
+        );
+        props.fetechOrdersData();
+        console.log("update order ...", res.data.message);
+      } catch (error) {
+        console.log(error.message);
+      }
+
+      //update detail
+      try {
+        itemList.forEach(async (detail) => {
+          const res = await axios.get(
+            `http://localhost:3500/api/detail/${detail._id}`
+          );
+          if (res.data.message !== "success") {
+            const res = await axios.post(
+              `http://localhost:3500/api/detail/${currentOrder.user._id}`,
+              {
+                item: detail.item.name,
+                count: detail.count,
+              }
+            );
+            console.log("Add detail ...", res.data.message);
+          } else {
+            const res = await axios.patch(
+              `http://localhost:3500/api/detail/${detail._id}`,
+              {
+                item: detail.item.name,
+                count: detail.count,
+              }
+            );
+            console.log("update detail ...", res.data.message);
+          }
+          // update details to order
+          await axios.get(
+            `http://localhost:3500/api/order/${currentOrder.user._id}`
+          );
+        });
+        props.fetechOrdersData();
+      } catch (error) {
+        console.log(error.message, error.detailId);
+      }
     } else {
       //create data
 
@@ -114,6 +184,7 @@ const OrderPopup = (props) => {
       };
 
       //create user
+      //todo: 1.改成 async await形式 2.新增的order，details會是空的，沒有被加入到order object裡面
       axios
         .post("http://localhost:3500/api/user", newOrder.user)
         .then((res) => {
