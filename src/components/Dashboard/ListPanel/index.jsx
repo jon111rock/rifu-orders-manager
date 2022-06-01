@@ -14,9 +14,7 @@ const ListPanel = (props) => {
 
   const filterList = useCallback(() => {
     if (selectedPage && selectedPage !== "所有訂單") {
-      const result = orders.filter(
-        (order) => order.order.state === selectedPage
-      );
+      const result = orders.filter((order) => order.state === selectedPage);
       setDisplayList(result);
     } else {
       setDisplayList(orders);

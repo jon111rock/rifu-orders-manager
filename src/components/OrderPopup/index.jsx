@@ -84,11 +84,11 @@ const OrderPopup = (props) => {
           fakeData[i].user.name = name;
           fakeData[i].user.address = address;
           fakeData[i].user.phone_number = phoneNumber;
-          fakeData[i].order.date = orderDate;
-          fakeData[i].order.completed_date = completedDate;
-          fakeData[i].order.detail = itemList;
-          fakeData[i].order.state = orderState;
-          fakeData[i].order.type = orderType;
+          fakeData[i].date = orderDate;
+          fakeData[i].completed_date = completedDate;
+          fakeData[i].detail = itemList;
+          fakeData[i].state = orderState;
+          fakeData[i].type = orderType;
         }
       }
     } else {
@@ -102,17 +102,15 @@ const OrderPopup = (props) => {
           address: address,
           phone_number: phoneNumber,
         },
-        order: {
-          oid: `H${
-            Math.floor(Date.now() / 10000000) +
-            Math.floor(Date.now() % 100000000)
-          }`,
-          date: orderDate,
-          completedDate: completedDate,
-          type: orderType,
-          detail: itemList,
-          state: orderState,
-        },
+
+        oid: `H${
+          Math.floor(Date.now() / 10000000) + Math.floor(Date.now() % 100000000)
+        }`,
+        date: orderDate,
+        completedDate: completedDate,
+        type: orderType,
+        detail: itemList,
+        state: orderState,
       };
 
       fakeData.push(newOrder);
@@ -132,11 +130,11 @@ const OrderPopup = (props) => {
     setName(props.currentSelectedOrder.user.name);
     setAddress(props.currentSelectedOrder.user.address);
     setPhoneNumber(props.currentSelectedOrder.user.phone_number);
-    setOrderDate(props.currentSelectedOrder.order.date);
-    setCompletedDate(props.currentSelectedOrder.order.completed_date);
-    setOrderType(props.currentSelectedOrder.order.type);
-    setItemList(props.currentSelectedOrder.order.detail);
-    setOrderState(props.currentSelectedOrder.order.state);
+    setOrderDate(props.currentSelectedOrder.date);
+    setCompletedDate(props.currentSelectedOrder.completed_date);
+    setOrderType(props.currentSelectedOrder.type);
+    setItemList(props.currentSelectedOrder.detail);
+    setOrderState(props.currentSelectedOrder.state);
   }, [props.currentSelectedOrder]);
 
   useEffect(() => {

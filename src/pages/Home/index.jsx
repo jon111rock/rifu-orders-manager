@@ -5,6 +5,7 @@ import OrderPopup from "../../components/OrderPopup";
 
 //fake data
 import fakeData from "../../data/orders";
+import axios from "axios";
 
 export const AppContext = React.createContext();
 
@@ -18,6 +19,10 @@ export default function Home() {
     //get data from http
     // ...
     //set Data
+    // axios();
+    axios.get("http://localhost:3500/api/order").then((res) => {
+      console.log(res.data.object);
+    });
     setOrdersData(fakeData);
   };
 
