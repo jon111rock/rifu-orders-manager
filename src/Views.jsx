@@ -4,9 +4,11 @@ import {
   Routes,
   Route,
   Outlet,
+  Navigate,
 } from "react-router-dom";
-import Dashboard from "./pages/Home";
+import Dashboard from "./pages/Order";
 import Sidebar from "./components/Sidebar";
+import Product from "./pages/Product";
 
 const Views = () => {
   return (
@@ -25,11 +27,9 @@ const Views = () => {
           }
         >
           <Route path="order" element={<Dashboard />} />
-          <Route
-            path="product"
-            element={<div className="dashboard">test</div>}
-          />
+          <Route path="product" element={<Product />} />
         </Route>
+        <Route path="*" element={<Navigate to="/order" />} replace />
       </Routes>
     </Router>
   );
