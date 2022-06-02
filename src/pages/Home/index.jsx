@@ -3,8 +3,6 @@ import Sidebar from "../../components/Sidebar";
 import Dashboard from "../../components/Dashboard";
 import OrderPopup from "../../components/OrderPopup";
 
-//fake data
-import fakeData from "../../data/orders";
 import axios from "axios";
 
 export const AppContext = React.createContext();
@@ -36,17 +34,14 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="container">
-      <input id="sidebar-switch" type="checkbox" />
+    <>
       <AppContext.Provider value={{ orders: ordersData }}>
         {/* <!-- control sidebar --> */}
-        <Sidebar />
         {/* <!-- when menu open --> */}
         <Dashboard
           setOrderPopupTrigger={setOrderPopupTrigger}
           getSelectedOrderIndex={getSelectedOrderIndex}
         />
-        <div className="sidebar-switch-panel"></div>
         <OrderPopup
           trigger={orderPopupTrigger}
           setOrderPopupTrigger={setOrderPopupTrigger}
@@ -57,6 +52,6 @@ export default function Home() {
           fetechOrdersData={fetechOrdersData}
         />
       </AppContext.Provider>
-    </div>
+    </>
   );
 }

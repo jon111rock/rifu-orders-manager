@@ -1,8 +1,10 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import "./style.scss";
 
 const Sidebar = () => {
   const [clickTarget, setClickTarget] = useState("訂單");
+  const navigate = useNavigate();
 
   return (
     <nav className="sidebar">
@@ -19,6 +21,7 @@ const Sidebar = () => {
             className={clickTarget === "訂單" ? "sidebar-active" : ""}
             onClick={() => {
               setClickTarget("訂單");
+              navigate("/order");
             }}
           >
             <i className="bx bx-home-alt-2 "></i>
@@ -28,6 +31,7 @@ const Sidebar = () => {
             className={clickTarget === "產品" ? "sidebar-active" : ""}
             onClick={() => {
               setClickTarget("產品");
+              navigate("/product");
             }}
           >
             <i className="bx bxs-book-content"></i>
