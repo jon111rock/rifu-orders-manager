@@ -3,6 +3,8 @@ import axios from "axios";
 import "./style.scss";
 import DeletePopup from "../OrderPopup/DeletePopup";
 
+const baseUrl = process.env.REACT_APP_BASE_URL;
+
 const ProductPopup = (props) => {
   const [name, setName] = useState();
   const [price, setPrice] = useState();
@@ -15,7 +17,7 @@ const ProductPopup = (props) => {
 
   const postProduct = async () => {
     try {
-      await axios.post("http://localhost:3500/api/item", {
+      await axios.post(`${baseUrl}/api/item`, {
         name: name,
         price: price,
       });
@@ -25,13 +27,10 @@ const ProductPopup = (props) => {
 
   const patchProduct = async () => {
     try {
-      await axios.patch(
-        `http://localhost:3500/api/item/${props.defaultProduct._id}`,
-        {
-          name: name,
-          price: price,
-        }
-      );
+      await axios.patch(`${baseUrl}/api/item/${props.defaultProduct._id}`, {
+        name: name,
+        price: price,
+      });
       props.fetechProductData();
     } catch (error) {
       console.error(error);
@@ -40,9 +39,7 @@ const ProductPopup = (props) => {
 
   const deleteProduct = async () => {
     try {
-      await axios.delete(
-        `http://localhost:3500/api/item/${props.defaultProduct._id}`
-      );
+      await axios.delete(`${baseUrl}/api/item/${props.defaultProduct._id}`);
       props.fetechProductData();
     } catch (error) {
       console.log(error);
@@ -71,7 +68,7 @@ const ProductPopup = (props) => {
     if (!props.defaultProduct) return;
     setName(props.defaultProduct.name);
     setPrice(props.defaultProduct.price);
-  }, []);
+  }, [props.defaultProduct]);
 
   return (
     <div className="p-popup">

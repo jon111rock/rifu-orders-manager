@@ -3,6 +3,8 @@ import axios from "axios";
 import "./style.scss";
 import ProductPopup from "../../components/ProductPopup";
 
+const baseUrl = process.env.REACT_APP_BASE_URL;
+
 const Product = () => {
   const [isOpenProductPopup, setIsOpenProductPopup] = useState(false);
   const [productList, setProductList] = useState([]);
@@ -10,7 +12,7 @@ const Product = () => {
 
   //fetechProductData
   const fetechProductData = async () => {
-    const res = await axios.get("http://localhost:3500/api/item");
+    const res = await axios.get(`${baseUrl}/api/item`);
 
     setProductList(res.data.result);
   };
