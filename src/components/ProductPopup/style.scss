@@ -55,6 +55,18 @@
       gap: 1rem;
       justify-content: flex-end;
 
+      .delete {
+        cursor: pointer;
+
+        border: none;
+        padding: 0.5rem;
+        border-radius: 10px;
+        font-size: 1rem;
+
+        background-color: #e65c5d;
+        color: white;
+      }
+
       .save {
         cursor: pointer;
 

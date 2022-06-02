@@ -6,13 +6,13 @@ import ProductPopup from "../../components/ProductPopup";
 const Product = () => {
   const [isOpenProductPopup, setIsOpenProductPopup] = useState(false);
   const [productList, setProductList] = useState([]);
+  const [currentSelectedProduct, setCurrentSelectedProduct] = useState();
 
   //fetechProductData
   const fetechProductData = async () => {
     const res = await axios.get("http://localhost:3500/api/item");
 
     setProductList(res.data.result);
-    // console.log(res.data.result);
   };
 
   useEffect(() => {
@@ -30,6 +30,7 @@ const Product = () => {
           <div
             className="add-product"
             onClick={() => {
+              setCurrentSelectedProduct();
               setIsOpenProductPopup(true);
             }}
           >
@@ -41,7 +42,14 @@ const Product = () => {
           <ul className="product-list">
             {productList.map((product) => {
               return (
-                <li className="product-item" key={product._id}>
+                <li
+                  className="product-item"
+                  key={product._id}
+                  onClick={() => {
+                    setIsOpenProductPopup(true);
+                    setCurrentSelectedProduct(product);
+                  }}
+                >
                   <h3>{product.name}</h3>
                   <h3>$ {product.price}</h3>
                 </li>
@@ -52,6 +60,7 @@ const Product = () => {
       </div>
       {isOpenProductPopup ? (
         <ProductPopup
+          defaultProduct={currentSelectedProduct}
           setIsOpenProductPopup={setIsOpenProductPopup}
           fetechProductData={fetechProductData}
         />
