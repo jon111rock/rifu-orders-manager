@@ -8,7 +8,7 @@ const OrderItem = (props) => {
   const [id, setId] = useState();
   const [name, setName] = useState();
   const [price, setPrice] = useState();
-  const [count, setCount] = useState();
+  const [count, setCount] = useState(1);
   const [total, setTotal] = useState();
   const [changedItem, setChangedItem] = useState();
 
@@ -49,9 +49,9 @@ const OrderItem = (props) => {
 
   //init state (run once)
   useEffect(() => {
-    const { did, item, count } = props.itemData;
+    const { _id, item, count } = props.itemData;
     if (!props.itemData) return;
-    setId(did);
+    setId(_id);
     setName(item.name);
     setPrice(item.price);
     setCount(count);

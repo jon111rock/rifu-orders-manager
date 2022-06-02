@@ -3,9 +3,11 @@ import "./style.scss";
 import OrderItem from "./OrderItem";
 import AddItemButton from "./AddItemButton";
 import InputDropDown from "./InputDropDown";
+import DeletePopup from "./DeletePopup";
 
 //fake data
-import fakeData from "../../data/orders";
+// import fakeData from "../../data/orders";
+import axios from "axios";
 
 const OrderPopup = (props) => {
   const clickInner = useRef();
@@ -17,9 +19,10 @@ const OrderPopup = (props) => {
   const [completedDate, setCompletedDate] = useState("");
   const [orderType, setOrderType] = useState("寄送");
   const [orderState, setOrderState] = useState("準備中");
+  const [detailList, setDetailList] = useState([]);
+  const [total, setTotal] = useState(0);
 
-  const [itemList, setItemList] = useState([]);
-  const [total, setTotal] = useState();
+  const [isDeleteOrder, setIsDeleteOrder] = useState(false);
 
   const { setOrderPopupTrigger } = props;
 
@@ -32,7 +35,7 @@ const OrderPopup = (props) => {
     setCompletedDate();
     setOrderType("寄送");
     setOrderState("準備中");
-    setItemList([]);
+    setDetailList([]);
     setTotal();
 
     setOrderPopupTrigger(false);
@@ -40,104 +43,136 @@ const OrderPopup = (props) => {
     props.setIsUpdateExistOrder(false);
   };
 
-  //orderItem
-  const addNewItem = (item) => {
-    setItemList([...itemList, item]);
-  };
-
-  const saveChangedItem = (did, changedItem, count, total) => {
-    for (let i in itemList) {
-      if (itemList[i].did === did) {
-        const newList = [...itemList];
-        if (changedItem) newList[i].item = changedItem;
-        newList[i].count = count;
-        newList[i].total = total;
-        setItemList(newList);
-      }
-    }
-  };
-
-  const deleteItem = (did) => {
-    const newItems = itemList.filter((item) => item.did !== did);
-    setItemList(newItems);
-  };
-
-  const computeTotal = useCallback(() => {
-    let total = 0;
-    for (let i in itemList) {
-      total += itemList[i].total;
-    }
-    setTotal(total);
-  }, [itemList]);
-
-  const handleSaveOrder = () => {
-    //http request
-    //...
-    //fake data
-    if (!name || !address || !phoneNumber || !orderDate || !orderType) return;
-
-    if (props.isUpdateExistOrder) {
-      //update data
-      const { id } = props.currentSelectedOrder;
-      for (let i in fakeData) {
-        if (fakeData[i].id === id) {
-          fakeData[i].user.name = name;
-          fakeData[i].user.address = address;
-          fakeData[i].user.phone_number = phoneNumber;
-          fakeData[i].order.date = orderDate;
-          fakeData[i].order.completed_date = completedDate;
-          fakeData[i].order.detail = itemList;
-          fakeData[i].order.state = orderState;
-          fakeData[i].order.type = orderType;
-        }
-      }
-    } else {
-      //create data
-
-      const newOrder = {
-        id: Math.floor(Date.now() / 100 + 87),
-        user: {
-          uid: Math.floor(Date.now() / 100),
-          name: name,
-          address: address,
-          phone_number: phoneNumber,
-        },
-        order: {
-          oid: `H${
-            Math.floor(Date.now() / 10000000) +
-            Math.floor(Date.now() % 100000000)
-          }`,
-          date: orderDate,
-          completedDate: completedDate,
-          type: orderType,
-          detail: itemList,
-          state: orderState,
-        },
-      };
-
-      fakeData.push(newOrder);
-    }
-
-    console.log("success");
-    clearFormAndClose();
-  };
-
-  useEffect(() => {
-    setTotal(0);
-  }, []);
-
-  // update exist order
-  useEffect(() => {
+  const importExistOrder = useCallback(() => {
     if (!props.currentSelectedOrder) return;
     setName(props.currentSelectedOrder.user.name);
     setAddress(props.currentSelectedOrder.user.address);
     setPhoneNumber(props.currentSelectedOrder.user.phone_number);
-    setOrderDate(props.currentSelectedOrder.order.date);
-    setCompletedDate(props.currentSelectedOrder.order.completed_date);
-    setOrderType(props.currentSelectedOrder.order.type);
-    setItemList(props.currentSelectedOrder.order.detail);
-    setOrderState(props.currentSelectedOrder.order.state);
+    setOrderDate(props.currentSelectedOrder.date);
+    setCompletedDate(props.currentSelectedOrder.completed_date);
+    setOrderType(props.currentSelectedOrder.type);
+    setDetailList(props.currentSelectedOrder.details);
+    setOrderState(props.currentSelectedOrder.state);
   }, [props.currentSelectedOrder]);
+
+  //orderItem
+  const addNewItem = (item) => {
+    setDetailList([...detailList, item]);
+  };
+
+  const saveChangedItem = (_id, changedItem, count) => {
+    for (let i in detailList) {
+      if (detailList[i]._id === _id) {
+        const newList = [...detailList];
+        if (changedItem) newList[i].item = changedItem;
+        newList[i].count = count;
+        setDetailList(newList);
+      }
+    }
+  };
+
+  const deleteItem = (_id) => {
+    const newItems = detailList.filter((item) => item._id !== _id);
+    setDetailList(newItems);
+  };
+
+  const computeTotal = useCallback(() => {
+    let total = 0;
+
+    for (let i in detailList) {
+      const count = detailList[i].count;
+      const price = detailList[i].item.price;
+      total += count * price;
+    }
+
+    setTotal(total);
+  }, [detailList]);
+
+  const handleSaveOrder = async () => {
+    if (!name || !address || !phoneNumber || !orderDate || !orderType) return;
+
+    const tempDetailList = [...detailList].map((detail) => ({
+      count: detail.count,
+      item: detail.item.name,
+    }));
+
+    if (props.isUpdateExistOrder) {
+      //update data
+      const currentOrder = props.currentSelectedOrder;
+      try {
+        //update user
+        await axios.patch(
+          `http://localhost:3500/api/user/${currentOrder.user._id}`,
+          {
+            name: name,
+            address: address,
+            phone_number: phoneNumber,
+          }
+        );
+        // update order
+        await axios.patch(
+          `http://localhost:3500/api/order/${currentOrder._id}`,
+          {
+            date: orderDate,
+            completed_date: completedDate,
+            type: orderType,
+            state: orderState,
+            details: tempDetailList,
+          }
+        );
+      } catch (error) {
+        console.error(error);
+      }
+    } else {
+      //create data
+      try {
+        let userId;
+
+        const existUser = await axios.get(
+          `http://localhost:3500/api/user/name/${name}`
+        );
+        if (existUser.data.message === "success") {
+          userId = existUser.data.result._id;
+        } else {
+          const user = await axios.post("http://localhost:3500/api/user", {
+            name: name,
+            address: address,
+            phone_number: phoneNumber,
+          });
+          userId = user.data.result._id;
+        }
+
+        await axios.post(`http://localhost:3500/api/order/${userId}`, {
+          date: orderDate,
+          completed_date: completedDate,
+          type: orderType,
+          state: orderState,
+          details: tempDetailList,
+        });
+      } catch (error) {
+        console.error(error.message);
+      }
+    }
+    props.fetechOrdersData();
+    clearFormAndClose();
+  };
+
+  const handleDeleteOrder = async () => {
+    try {
+      const currentOrder = props.currentSelectedOrder;
+      await axios.delete(`http://localhost:3500/api/order/${currentOrder._id}`);
+    } catch (error) {
+      console.error(error);
+    }
+    setIsDeleteOrder(false);
+    clearFormAndClose();
+    props.fetechOrdersData();
+  };
+
+  // update exist order
+  useEffect(() => {
+    importExistOrder();
+  }, [importExistOrder]);
 
   useEffect(() => {
     computeTotal();
@@ -190,7 +225,7 @@ const OrderPopup = (props) => {
               <div>
                 <span>預計出貨時間</span>
                 <input
-                  type="text"
+                  type="date"
                   onChange={(e) => {
                     setOrderDate(e.target.value);
                   }}
@@ -200,7 +235,7 @@ const OrderPopup = (props) => {
               <div>
                 <span>預計到貨時間</span>
                 <input
-                  type="text"
+                  type="date"
                   onChange={(e) => {
                     setCompletedDate(e.target.value);
                   }}
@@ -231,11 +266,11 @@ const OrderPopup = (props) => {
           </ul>
           <div className="orders-area">
             <div className="orders-list">
-              {itemList.map((item) => {
+              {detailList.map((detail) => {
                 return (
                   <OrderItem
-                    key={item.did}
-                    itemData={item}
+                    key={detail.item._id}
+                    itemData={detail}
                     deleteItem={deleteItem}
                     saveChangedItem={saveChangedItem}
                   />
@@ -248,19 +283,45 @@ const OrderPopup = (props) => {
 
         {/* footer */}
         <div className="compute-group">
-          <h3>Total</h3>
+          <div className="left-box">
+            <h3>總金額</h3>
+            <h3>${total}</h3>
+          </div>
           <div className="right-box">
-            <span>${total}</span>
             <div className="button-group">
-              <button className="confirm" onClick={handleSaveOrder}>
+              <button
+                className={`delete popup-btn ${
+                  props.isUpdateExistOrder ? "active" : ""
+                }`}
+                onClick={() => {
+                  setIsDeleteOrder(true);
+                }}
+              >
+                刪除
+              </button>
+              <button className="confirm popup-btn" onClick={handleSaveOrder}>
                 儲存
               </button>
-              <button className="cancel" onClick={clearFormAndClose}>
+              <button className="cancel popup-btn" onClick={clearFormAndClose}>
                 取消
               </button>
             </div>
           </div>
         </div>
+        {/* Delete popup */}
+        {isDeleteOrder ? (
+          <DeletePopup
+            onClick={(state) => {
+              if (state === "delete") {
+                handleDeleteOrder();
+              } else {
+                setIsDeleteOrder(false);
+              }
+            }}
+          />
+        ) : (
+          ""
+        )}
       </div>
     </div>
   ) : (

@@ -19,7 +19,7 @@ const OrdersTable = (props) => {
             orders.map((item) => {
               let state = "state-prepared";
 
-              switch (item.order.state) {
+              switch (item.state) {
                 case "準備中":
                   state = "state-prepared";
                   break;
@@ -36,18 +36,18 @@ const OrdersTable = (props) => {
 
               return (
                 <tr
-                  key={item.id}
+                  key={item._id}
                   onClick={() => {
-                    props.onClick(item.id);
+                    props.onClick(item._id);
                   }}
                 >
-                  <td>{item.order.oid}</td>
+                  <td>{item._id}</td>
                   <td>{item.user.name}</td>
                   <td>{item.user.address}</td>
                   <td>{item.user.phone_number}</td>
-                  <td>{item.order.date}</td>
+                  <td>{item.date}</td>
                   <td>
-                    <div className={state}>{item.order.state}</div>
+                    <div className={state}>{item.state}</div>
                   </td>
                 </tr>
               );

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import "./style.scss";
 
 const Pagination = (props) => {
-  const [currentPage, setCurrentPage] = useState();
+  const [currentPage, setCurrentPage] = useState("所有訂單");
   const { getCurrentPageName } = props;
 
   const setPage = (name) => {

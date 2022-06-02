@@ -11,6 +11,13 @@
   }
 }
 
+.popup-btn {
+  cursor: pointer;
+  font-size: 1rem;
+  padding: 0.5rem 1rem;
+  border-radius: 10px;
+}
+
 .popup {
   position: fixed;
   top: 0;
@@ -95,18 +102,20 @@
     }
 
     .compute-group {
-      display: flex;
-      justify-content: space-between;
+      margin-top: 1rem;
+      // display: flex;
+      // justify-content: space-between;
       padding: 1rem;
 
       border-top: 1px solid gray;
 
-      .right-box {
+      .left-box {
         display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        gap: 1rem;
+        gap: 2rem;
+        align-items: center;
+      }
 
+      .right-box {
         span {
           text-align: right;
         }
@@ -114,23 +123,24 @@
           display: flex;
           gap: 1rem;
           justify-content: flex-end;
+
+          .delete {
+            display: none;
+
+            border: none;
+            background-color: #e65c5e;
+            color: #fff;
+          }
+
           .confirm {
-            cursor: pointer;
-            font-size: 1rem;
             border: none;
             background-color: #036bfe;
             color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 10px;
           }
           .cancel {
-            cursor: pointer;
-            font-size: 1rem;
             border: 1px solid #036bfe;
             background-color: #fff;
             color: #036bfe;
-            padding: 0.5rem 1rem;
-            border-radius: 10px;
           }
         }
       }

@@ -3,8 +3,7 @@ import Sidebar from "../../components/Sidebar";
 import Dashboard from "../../components/Dashboard";
 import OrderPopup from "../../components/OrderPopup";
 
-//fake data
-import fakeData from "../../data/orders";
+import axios from "axios";
 
 export const AppContext = React.createContext();
 
@@ -15,18 +14,16 @@ export default function Home() {
   const [isUpdateExistOrder, setIsUpdateExistOrder] = useState(false);
 
   const fetechOrdersData = () => {
-    //get data from http
-    // ...
-    //set Data
-    setOrdersData(fakeData);
+    axios.get("http://localhost:3500/api/order").then((res) => {
+      setOrdersData(res.data.result);
+    });
   };
 
   const getSelectedOrderIndex = (selectedIndex) => {
     //http request
     //...
     //get one order from db
-    const selectedItem = ordersData.find((i) => i.id === selectedIndex);
-
+    const selectedItem = ordersData.find((i) => i._id === selectedIndex);
     setCurrentSelectedOrder(selectedItem);
     setOrderPopupTrigger(true);
     setIsUpdateExistOrder(true);
@@ -37,17 +34,14 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="container">
-      <input id="sidebar-switch" type="checkbox" />
+    <>
       <AppContext.Provider value={{ orders: ordersData }}>
         {/* <!-- control sidebar --> */}
-        <Sidebar />
         {/* <!-- when menu open --> */}
         <Dashboard
           setOrderPopupTrigger={setOrderPopupTrigger}
           getSelectedOrderIndex={getSelectedOrderIndex}
         />
-        <div className="sidebar-switch-panel"></div>
         <OrderPopup
           trigger={orderPopupTrigger}
           setOrderPopupTrigger={setOrderPopupTrigger}
@@ -55,8 +49,9 @@ export default function Home() {
           setCurrentSelectedOrder={setCurrentSelectedOrder}
           isUpdateExistOrder={isUpdateExistOrder}
           setIsUpdateExistOrder={setIsUpdateExistOrder}
+          fetechOrdersData={fetechOrdersData}
         />
       </AppContext.Provider>
-    </div>
+    </>
   );
 }

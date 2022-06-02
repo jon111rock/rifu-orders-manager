@@ -1,8 +1,11 @@
-import React, { useState } from "react";
-import orderData from "../../../../data/orders";
+import React, { useState, useContext } from "react";
+// import orderData from "../../../../data/orders";
 
-const OrdersCard = () => {
-  const [orders] = useState(orderData);
+// import AppContext from "../../../../pages/Home";
+
+const OrdersCard = (props) => {
+  // const orders = props.displayList;
+  const orders = [];
 
   return (
     <div className="orders-card">
@@ -10,7 +13,7 @@ const OrdersCard = () => {
         {orders.map((item) => {
           let state = "state-prepared";
 
-          switch (item.order.state) {
+          switch (item.state) {
             case "準備中":
               state = "state-prepared";
               break;
@@ -25,12 +28,12 @@ const OrdersCard = () => {
           }
 
           return (
-            <li className="cards-item" key={item.id}>
+            <li className="cards-item" key={item._id}>
               <div className="name">{item.user.name}</div>
               <div className="address">{item.user.address}</div>
               <div className="footer">
-                <div className="date">{item.order.date}</div>
-                <div className={state}>{item.order.state}</div>
+                <div className="date">{item.date}</div>
+                <div className={state}>{item.state}</div>
               </div>
             </li>
           );
