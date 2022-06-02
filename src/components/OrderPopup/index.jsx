@@ -51,7 +51,12 @@ const OrderPopup = (props) => {
     setOrderDate(props.currentSelectedOrder.date);
     setCompletedDate(props.currentSelectedOrder.completed_date);
     setOrderType(props.currentSelectedOrder.type);
-    setDetailList(props.currentSelectedOrder.details);
+
+    //filter if item equal null
+    const filtedList = props.currentSelectedOrder.details.filter(
+      (detail) => detail.item !== null
+    );
+    setDetailList(filtedList);
     setOrderState(props.currentSelectedOrder.state);
   }, [props.currentSelectedOrder]);
 
@@ -259,6 +264,9 @@ const OrderPopup = (props) => {
           <div className="orders-area">
             <div className="orders-list">
               {detailList.map((detail) => {
+                if (!detail.item) {
+                  detail.item = { name: "找不到", price: 999 };
+                }
                 return (
                   <OrderItem
                     key={detail.item._id}
