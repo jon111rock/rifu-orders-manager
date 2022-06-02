@@ -1,14 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import "./style.scss";
-
-const itemDatas = [
-  { _id: 1, name: "草莓三明治", price: 25 },
-  { _id: 2, name: "巧克力三明治", price: 30 },
-  { _id: 3, name: "抹茶厚片", price: 45 },
-];
 
 function DropDown(props) {
   const [active, setActive] = useState();
+  const [itemDatas, setItemDatas] = useState();
 
   const handleSelectItem = (item) => {
     if (props.getItemData) {
@@ -17,14 +13,19 @@ function DropDown(props) {
     } else if (props.addNewItem) {
       //add new item
       props.addNewItem({
-        _id: Math.floor(Date.now() / 1000),
         item: item,
         count: 1,
-        total: item.price,
       });
     }
     setActive(false);
   };
+
+  useEffect(() => {
+    axios
+      .get("http://localhost:3500/api/item")
+      .then((res) => res.data.result)
+      .then((items) => setItemDatas(items));
+  }, []);
 
   return (
     <div
@@ -46,7 +47,7 @@ function DropDown(props) {
         </div>
         <div className="dropdown-items">
           <ul>
-            {
+            {itemDatas ? (
               //DropDown item
               itemDatas.map((item) => {
                 return (
@@ -61,7 +62,9 @@ function DropDown(props) {
                   </li>
                 );
               })
-            }
+            ) : (
+              <div>讀取中...</div>
+            )}
           </ul>
         </div>
       </div>

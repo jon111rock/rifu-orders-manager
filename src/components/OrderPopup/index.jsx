@@ -19,7 +19,7 @@ const OrderPopup = (props) => {
   const [orderType, setOrderType] = useState("寄送");
   const [orderState, setOrderState] = useState("準備中");
 
-  const [itemList, setItemList] = useState([]);
+  const [detailList, setDetailList] = useState([]);
   const [total, setTotal] = useState();
 
   const { setOrderPopupTrigger } = props;
@@ -33,7 +33,7 @@ const OrderPopup = (props) => {
     setCompletedDate();
     setOrderType("寄送");
     setOrderState("準備中");
-    setItemList([]);
+    setDetailList([]);
     setTotal();
 
     setOrderPopupTrigger(false);
@@ -43,62 +43,52 @@ const OrderPopup = (props) => {
 
   //orderItem
   const addNewItem = (item) => {
-    setItemList([...itemList, item]);
+    setDetailList([...detailList, item]);
   };
 
   const saveChangedItem = (_id, changedItem, count, total) => {
-    for (let i in itemList) {
-      if (itemList[i]._id === _id) {
-        const newList = [...itemList];
+    for (let i in detailList) {
+      if (detailList[i]._id === _id) {
+        const newList = [...detailList];
         if (changedItem) newList[i].item = changedItem;
         newList[i].count = count;
-        newList[i].total = total;
-        setItemList(newList);
+        // newList[i].total = total;
+        setDetailList(newList);
       }
     }
   };
 
   const deleteItem = (_id) => {
-    const newItems = itemList.filter((item) => item._id !== _id);
-    setItemList(newItems);
+    const newItems = detailList.filter((item) => item._id !== _id);
+    setDetailList(newItems);
   };
 
   const computeTotal = useCallback(() => {
     let total = 0;
-    for (let i in itemList) {
-      total += itemList[i].total;
+
+    for (let i in detailList) {
+      const count = detailList[i].count;
+      const price = detailList[i].item.price;
+      total += count * price;
     }
+
     setTotal(total);
-  }, [itemList]);
+  }, [detailList]);
 
   const handleSaveOrder = async () => {
-    //http request
-    //...
-    //fake data
     if (!name || !address || !phoneNumber || !orderDate || !orderType) return;
+
+    const tempDetailList = [...detailList].map((detail) => ({
+      count: detail.count,
+      item: detail.item.name,
+    }));
 
     if (props.isUpdateExistOrder) {
       //update data
-      // const { _id } = props.currentSelectedOrder;
-      // for (let i in fakeData) {
-      //   if (fakeData[i]._id === _id) {
-      //     fakeData[i].user.name = name;
-      //     fakeData[i].user.address = address;
-      //     fakeData[i].user.phone_number = phoneNumber;
-      //     fakeData[i].date = orderDate;
-      //     fakeData[i].completed_date = completedDate;
-      //     fakeData[i].detail = itemList;
-      //     fakeData[i].state = orderState;
-      //     fakeData[i].type = orderType;
-      //   }
-      // }
-
       const currentOrder = props.currentSelectedOrder;
-
-      // console.log(currentOrder);
-      // update user
       try {
-        const res = await axios.patch(
+        //update user
+        await axios.patch(
           `http://localhost:3500/api/user/${currentOrder.user._id}`,
           {
             name: name,
@@ -106,124 +96,42 @@ const OrderPopup = (props) => {
             phone_number: phoneNumber,
           }
         );
-        props.fetechOrdersData();
-        console.log("update user ...", res.data.message);
-      } catch (error) {
-        console.log(error.message);
-      }
-
-      // update order
-      try {
-        const res = await axios.patch(
+        // update order
+        await axios.patch(
           `http://localhost:3500/api/order/${currentOrder._id}`,
           {
             date: orderDate,
             completed_date: completedDate,
             type: orderType,
             state: orderState,
+            details: tempDetailList,
           }
         );
-        props.fetechOrdersData();
-        console.log("update order ...", res.data.message);
       } catch (error) {
-        console.log(error.message);
-      }
-
-      //update detail
-      try {
-        itemList.forEach(async (detail) => {
-          const res = await axios.get(
-            `http://localhost:3500/api/detail/${detail._id}`
-          );
-          if (res.data.message !== "success") {
-            const res = await axios.post(
-              `http://localhost:3500/api/detail/${currentOrder.user._id}`,
-              {
-                item: detail.item.name,
-                count: detail.count,
-              }
-            );
-            console.log("Add detail ...", res.data.message);
-          } else {
-            const res = await axios.patch(
-              `http://localhost:3500/api/detail/${detail._id}`,
-              {
-                item: detail.item.name,
-                count: detail.count,
-              }
-            );
-            console.log("update detail ...", res.data.message);
-          }
-          // update details to order
-          await axios.get(
-            `http://localhost:3500/api/order/${currentOrder.user._id}`
-          );
-        });
-        props.fetechOrdersData();
-      } catch (error) {
-        console.log(error.message, error.detailId);
+        console.error(error);
       }
     } else {
       //create data
-
-      const newOrder = {
-        user: {
+      try {
+        const user = await axios.post("http://localhost:3500/api/user", {
           name: name,
           address: address,
           phone_number: phoneNumber,
-        },
-
-        oid: `H${
-          Math.floor(Date.now() / 10000000) + Math.floor(Date.now() % 100000000)
-        }`,
-        date: orderDate,
-        completedDate: completedDate,
-        type: orderType,
-        details: itemList, //
-        state: orderState,
-      };
-
-      //create user
-      //todo: 1.改成 async await形式 2.新增的order，details會是空的，沒有被加入到order object裡面
-      axios
-        .post("http://localhost:3500/api/user", newOrder.user)
-        .then((res) => {
-          console.log("create user ...", res.data.message);
-          return res.data.object._id;
-        })
-        .then((userId) => {
-          itemList.forEach((item) => {
-            axios
-              .post(`http://localhost:3500/api/detail/${userId}`, {
-                item: item.item.name,
-                count: item.count,
-              })
-              .then((res) => {
-                console.log("create details ...", res.data.message);
-              });
-          });
-
-          return userId;
-        })
-        .then((userId) => {
-          axios
-            .post(`http://localhost:3500/api/order/${userId}`, {
-              date: newOrder.date,
-              completed_date: newOrder.completedDate,
-              type: newOrder.type,
-              state: newOrder.state,
-            })
-            .then((res) => {
-              console.log("create order ...", res.data.message);
-
-              props.fetechOrdersData();
-            });
         });
+        const userId = user.data.result._id;
 
-      // fakeData.push(newOrder);
-      // console.log("create new order");
+        await axios.post(`http://localhost:3500/api/order/${userId}`, {
+          date: orderDate,
+          completed_date: completedDate,
+          type: orderType,
+          state: orderState,
+          details: tempDetailList,
+        });
+      } catch (error) {
+        console.error(error.message);
+      }
     }
-
+    props.fetechOrdersData();
     clearFormAndClose();
   };
 
@@ -240,7 +148,7 @@ const OrderPopup = (props) => {
     setOrderDate(props.currentSelectedOrder.date);
     setCompletedDate(props.currentSelectedOrder.completed_date);
     setOrderType(props.currentSelectedOrder.type);
-    setItemList(props.currentSelectedOrder.details);
+    setDetailList(props.currentSelectedOrder.details);
     setOrderState(props.currentSelectedOrder.state);
   }, [props.currentSelectedOrder]);
 
@@ -336,11 +244,11 @@ const OrderPopup = (props) => {
           </ul>
           <div className="orders-area">
             <div className="orders-list">
-              {itemList.map((item) => {
+              {detailList.map((detail) => {
                 return (
                   <OrderItem
-                    key={item._id}
-                    itemData={item}
+                    key={detail.item._id}
+                    itemData={detail}
                     deleteItem={deleteItem}
                     saveChangedItem={saveChangedItem}
                   />

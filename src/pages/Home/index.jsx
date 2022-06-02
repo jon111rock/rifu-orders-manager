@@ -16,15 +16,9 @@ export default function Home() {
   const [isUpdateExistOrder, setIsUpdateExistOrder] = useState(false);
 
   const fetechOrdersData = () => {
-    //get data from http
-    // ...
-    //set Data
-    // axios();
     axios.get("http://localhost:3500/api/order").then((res) => {
-      // console.log(res.data.object);
-      setOrdersData(res.data.object);
+      setOrdersData(res.data.result);
     });
-    // console.log("fake", fakeData);
   };
 
   const getSelectedOrderIndex = (selectedIndex) => {

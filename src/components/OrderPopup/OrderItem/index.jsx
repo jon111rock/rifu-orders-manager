@@ -8,7 +8,7 @@ const OrderItem = (props) => {
   const [id, setId] = useState();
   const [name, setName] = useState();
   const [price, setPrice] = useState();
-  const [count, setCount] = useState();
+  const [count, setCount] = useState(1);
   const [total, setTotal] = useState();
   const [changedItem, setChangedItem] = useState();
 
