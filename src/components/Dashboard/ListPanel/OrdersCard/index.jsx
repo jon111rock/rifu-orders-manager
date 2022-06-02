@@ -1,7 +1,4 @@
-import React, { useState, useContext } from "react";
-// import orderData from "../../../../data/orders";
-
-// import AppContext from "../../../../pages/Home";
+import React, { useState } from "react";
 
 const OrdersCard = (props) => {
   // const orders = props.displayList;

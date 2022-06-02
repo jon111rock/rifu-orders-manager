@@ -4,7 +4,7 @@ import Searchbar from "./Searchbar";
 import OrdersTable from "./OrdersTable";
 import OrdersCard from "./OrdersCard";
 
-import { AppContext } from "../../../pages/Home";
+import { AppContext } from "../../../pages/Order";
 
 const ListPanel = (props) => {
   const orders = useContext(AppContext).orders;

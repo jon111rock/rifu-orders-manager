@@ -5,9 +5,9 @@ import AddItemButton from "./AddItemButton";
 import InputDropDown from "./InputDropDown";
 import DeletePopup from "./DeletePopup";
 
-//fake data
-// import fakeData from "../../data/orders";
 import axios from "axios";
+
+const baseUrl = process.env.REACT_APP_BASE_URL;
 
 const OrderPopup = (props) => {
   const clickInner = useRef();
@@ -51,7 +51,12 @@ const OrderPopup = (props) => {
     setOrderDate(props.currentSelectedOrder.date);
     setCompletedDate(props.currentSelectedOrder.completed_date);
     setOrderType(props.currentSelectedOrder.type);
-    setDetailList(props.currentSelectedOrder.details);
+
+    //filter if item equal null
+    const filtedList = props.currentSelectedOrder.details.filter(
+      (detail) => detail.item !== null
+    );
+    setDetailList(filtedList);
     setOrderState(props.currentSelectedOrder.state);
   }, [props.currentSelectedOrder]);
 
@@ -101,25 +106,19 @@ const OrderPopup = (props) => {
       const currentOrder = props.currentSelectedOrder;
       try {
         //update user
-        await axios.patch(
-          `http://localhost:3500/api/user/${currentOrder.user._id}`,
-          {
-            name: name,
-            address: address,
-            phone_number: phoneNumber,
-          }
-        );
+        await axios.patch(`${baseUrl}/api/user/${currentOrder.user._id}`, {
+          name: name,
+          address: address,
+          phone_number: phoneNumber,
+        });
         // update order
-        await axios.patch(
-          `http://localhost:3500/api/order/${currentOrder._id}`,
-          {
-            date: orderDate,
-            completed_date: completedDate,
-            type: orderType,
-            state: orderState,
-            details: tempDetailList,
-          }
-        );
+        await axios.patch(`${baseUrl}/api/order/${currentOrder._id}`, {
+          date: orderDate,
+          completed_date: completedDate,
+          type: orderType,
+          state: orderState,
+          details: tempDetailList,
+        });
       } catch (error) {
         console.error(error);
       }
@@ -128,13 +127,11 @@ const OrderPopup = (props) => {
       try {
         let userId;
 
-        const existUser = await axios.get(
-          `http://localhost:3500/api/user/name/${name}`
-        );
+        const existUser = await axios.get(`${baseUrl}/api/user/name/${name}`);
         if (existUser.data.message === "success") {
           userId = existUser.data.result._id;
         } else {
-          const user = await axios.post("http://localhost:3500/api/user", {
+          const user = await axios.post(`${baseUrl}/api/user`, {
             name: name,
             address: address,
             phone_number: phoneNumber,
@@ -142,7 +139,7 @@ const OrderPopup = (props) => {
           userId = user.data.result._id;
         }
 
-        await axios.post(`http://localhost:3500/api/order/${userId}`, {
+        await axios.post(`${baseUrl}/api/order/${userId}`, {
           date: orderDate,
           completed_date: completedDate,
           type: orderType,
@@ -160,7 +157,7 @@ const OrderPopup = (props) => {
   const handleDeleteOrder = async () => {
     try {
       const currentOrder = props.currentSelectedOrder;
-      await axios.delete(`http://localhost:3500/api/order/${currentOrder._id}`);
+      await axios.delete(`${baseUrl}/api/order/${currentOrder._id}`);
     } catch (error) {
       console.error(error);
     }
@@ -267,6 +264,9 @@ const OrderPopup = (props) => {
           <div className="orders-area">
             <div className="orders-list">
               {detailList.map((detail) => {
+                if (!detail.item) {
+                  detail.item = { name: "找不到", price: 999 };
+                }
                 return (
                   <OrderItem
                     key={detail.item._id}

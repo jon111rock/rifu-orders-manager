@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import Sidebar from "../../components/Sidebar";
 import Dashboard from "../../components/Dashboard";
 import OrderPopup from "../../components/OrderPopup";
 
@@ -7,7 +6,7 @@ import axios from "axios";
 
 export const AppContext = React.createContext();
 
-export default function Home() {
+const Order = () => {
   const [orderPopupTrigger, setOrderPopupTrigger] = useState(false);
   const [ordersData, setOrdersData] = useState();
   const [currentSelectedOrder, setCurrentSelectedOrder] = useState();
@@ -20,9 +19,6 @@ export default function Home() {
   };
 
   const getSelectedOrderIndex = (selectedIndex) => {
-    //http request
-    //...
-    //get one order from db
     const selectedItem = ordersData.find((i) => i._id === selectedIndex);
     setCurrentSelectedOrder(selectedItem);
     setOrderPopupTrigger(true);
@@ -54,4 +50,6 @@ export default function Home() {
       </AppContext.Provider>
     </>
   );
-}
+};
+
+export default Order;
