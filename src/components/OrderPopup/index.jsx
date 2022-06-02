@@ -3,6 +3,7 @@ import "./style.scss";
 import OrderItem from "./OrderItem";
 import AddItemButton from "./AddItemButton";
 import InputDropDown from "./InputDropDown";
+import DeletePopup from "./DeletePopup";
 
 //fake data
 // import fakeData from "../../data/orders";
@@ -18,9 +19,10 @@ const OrderPopup = (props) => {
   const [completedDate, setCompletedDate] = useState("");
   const [orderType, setOrderType] = useState("寄送");
   const [orderState, setOrderState] = useState("準備中");
-
   const [detailList, setDetailList] = useState([]);
   const [total, setTotal] = useState(0);
+
+  const [isDeleteOrder, setIsDeleteOrder] = useState(false);
 
   const { setOrderPopupTrigger } = props;
 
@@ -124,12 +126,21 @@ const OrderPopup = (props) => {
     } else {
       //create data
       try {
-        const user = await axios.post("http://localhost:3500/api/user", {
-          name: name,
-          address: address,
-          phone_number: phoneNumber,
-        });
-        const userId = user.data.result._id;
+        let userId;
+
+        const existUser = await axios.get(
+          `http://localhost:3500/api/user/name/${name}`
+        );
+        if (existUser.data.message === "success") {
+          userId = existUser.data.result._id;
+        } else {
+          const user = await axios.post("http://localhost:3500/api/user", {
+            name: name,
+            address: address,
+            phone_number: phoneNumber,
+          });
+          userId = user.data.result._id;
+        }
 
         await axios.post(`http://localhost:3500/api/order/${userId}`, {
           date: orderDate,
@@ -144,6 +155,18 @@ const OrderPopup = (props) => {
     }
     props.fetechOrdersData();
     clearFormAndClose();
+  };
+
+  const handleDeleteOrder = async () => {
+    try {
+      const currentOrder = props.currentSelectedOrder;
+      await axios.delete(`http://localhost:3500/api/order/${currentOrder._id}`);
+    } catch (error) {
+      console.error(error);
+    }
+    setIsDeleteOrder(false);
+    props.setOrderPopupTrigger(false);
+    props.fetechOrdersData();
   };
 
   // update exist order
@@ -270,6 +293,9 @@ const OrderPopup = (props) => {
                 className={`delete popup-btn ${
                   props.isUpdateExistOrder ? "active" : ""
                 }`}
+                onClick={() => {
+                  setIsDeleteOrder(true);
+                }}
               >
                 刪除
               </button>
@@ -282,6 +308,20 @@ const OrderPopup = (props) => {
             </div>
           </div>
         </div>
+        {/* Delete popup */}
+        {isDeleteOrder ? (
+          <DeletePopup
+            onClick={(state) => {
+              if (state === "delete") {
+                handleDeleteOrder();
+              } else {
+                setIsDeleteOrder(false);
+              }
+            }}
+          />
+        ) : (
+          ""
+        )}
       </div>
     </div>
   ) : (
