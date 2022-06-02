@@ -165,7 +165,7 @@ const OrderPopup = (props) => {
       console.error(error);
     }
     setIsDeleteOrder(false);
-    props.setOrderPopupTrigger(false);
+    clearFormAndClose();
     props.fetechOrdersData();
   };
 
@@ -225,7 +225,7 @@ const OrderPopup = (props) => {
               <div>
                 <span>預計出貨時間</span>
                 <input
-                  type="text"
+                  type="date"
                   onChange={(e) => {
                     setOrderDate(e.target.value);
                   }}
@@ -235,7 +235,7 @@ const OrderPopup = (props) => {
               <div>
                 <span>預計到貨時間</span>
                 <input
-                  type="text"
+                  type="date"
                   onChange={(e) => {
                     setCompletedDate(e.target.value);
                   }}
