@@ -20,7 +20,7 @@ const OrderPopup = (props) => {
   const [orderState, setOrderState] = useState("準備中");
 
   const [detailList, setDetailList] = useState([]);
-  const [total, setTotal] = useState();
+  const [total, setTotal] = useState(0);
 
   const { setOrderPopupTrigger } = props;
 
@@ -41,18 +41,29 @@ const OrderPopup = (props) => {
     props.setIsUpdateExistOrder(false);
   };
 
+  const importExistOrder = useCallback(() => {
+    if (!props.currentSelectedOrder) return;
+    setName(props.currentSelectedOrder.user.name);
+    setAddress(props.currentSelectedOrder.user.address);
+    setPhoneNumber(props.currentSelectedOrder.user.phone_number);
+    setOrderDate(props.currentSelectedOrder.date);
+    setCompletedDate(props.currentSelectedOrder.completed_date);
+    setOrderType(props.currentSelectedOrder.type);
+    setDetailList(props.currentSelectedOrder.details);
+    setOrderState(props.currentSelectedOrder.state);
+  }, [props.currentSelectedOrder]);
+
   //orderItem
   const addNewItem = (item) => {
     setDetailList([...detailList, item]);
   };
 
-  const saveChangedItem = (_id, changedItem, count, total) => {
+  const saveChangedItem = (_id, changedItem, count) => {
     for (let i in detailList) {
       if (detailList[i]._id === _id) {
         const newList = [...detailList];
         if (changedItem) newList[i].item = changedItem;
         newList[i].count = count;
-        // newList[i].total = total;
         setDetailList(newList);
       }
     }
@@ -135,22 +146,10 @@ const OrderPopup = (props) => {
     clearFormAndClose();
   };
 
-  useEffect(() => {
-    setTotal(0);
-  }, []);
-
   // update exist order
   useEffect(() => {
-    if (!props.currentSelectedOrder) return;
-    setName(props.currentSelectedOrder.user.name);
-    setAddress(props.currentSelectedOrder.user.address);
-    setPhoneNumber(props.currentSelectedOrder.user.phone_number);
-    setOrderDate(props.currentSelectedOrder.date);
-    setCompletedDate(props.currentSelectedOrder.completed_date);
-    setOrderType(props.currentSelectedOrder.type);
-    setDetailList(props.currentSelectedOrder.details);
-    setOrderState(props.currentSelectedOrder.state);
-  }, [props.currentSelectedOrder]);
+    importExistOrder();
+  }, [importExistOrder]);
 
   useEffect(() => {
     computeTotal();
@@ -261,14 +260,23 @@ const OrderPopup = (props) => {
 
         {/* footer */}
         <div className="compute-group">
-          <h3>Total</h3>
+          <div className="left-box">
+            <h3>總金額</h3>
+            <h3>${total}</h3>
+          </div>
           <div className="right-box">
-            <span>${total}</span>
             <div className="button-group">
-              <button className="confirm" onClick={handleSaveOrder}>
+              <button
+                className={`delete popup-btn ${
+                  props.isUpdateExistOrder ? "active" : ""
+                }`}
+              >
+                刪除
+              </button>
+              <button className="confirm popup-btn" onClick={handleSaveOrder}>
                 儲存
               </button>
-              <button className="cancel" onClick={clearFormAndClose}>
+              <button className="cancel popup-btn" onClick={clearFormAndClose}>
                 取消
               </button>
             </div>

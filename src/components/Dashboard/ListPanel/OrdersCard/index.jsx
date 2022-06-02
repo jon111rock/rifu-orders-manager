@@ -1,8 +1,11 @@
-import React, { useState } from "react";
-import orderData from "../../../../data/orders";
+import React, { useState, useContext } from "react";
+// import orderData from "../../../../data/orders";
 
-const OrdersCard = () => {
-  const [orders] = useState(orderData);
+// import AppContext from "../../../../pages/Home";
+
+const OrdersCard = (props) => {
+  // const orders = props.displayList;
+  const orders = [];
 
   return (
     <div className="orders-card">

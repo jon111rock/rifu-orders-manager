@@ -43,7 +43,7 @@ const ListPanel = (props) => {
       />
 
       {/* <!-- Mobile Card --> */}
-      <OrdersCard />
+      <OrdersCard displayList={displayList} />
     </div>
   );
 };
