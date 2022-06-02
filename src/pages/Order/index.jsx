@@ -19,9 +19,6 @@ const Order = () => {
   };
 
   const getSelectedOrderIndex = (selectedIndex) => {
-    //http request
-    //...
-    //get one order from db
     const selectedItem = ordersData.find((i) => i._id === selectedIndex);
     setCurrentSelectedOrder(selectedItem);
     setOrderPopupTrigger(true);
