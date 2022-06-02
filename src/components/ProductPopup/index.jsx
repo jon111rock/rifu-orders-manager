@@ -100,7 +100,7 @@ const ProductPopup = (props) => {
 
         <div className="d-button-box">
           <button
-            className="delete"
+            className={`delete ${props.defaultProduct ? "active" : ""}`}
             onClick={() => {
               setIsDeletePopup(true);
             }}
