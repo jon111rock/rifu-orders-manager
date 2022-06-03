@@ -26,10 +26,10 @@ const Views = () => {
             </div>
           }
         >
-          <Route path="order" element={<Dashboard />} />
+          <Route path="" element={<Dashboard />} />
           <Route path="product" element={<Product />} />
         </Route>
-        <Route path="*" element={<Navigate to="/order" />} replace />
+        <Route path="*" element={<Navigate to="/" />} replace />
       </Routes>
     </Router>
   );
