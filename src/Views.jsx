@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useRef } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -11,6 +11,12 @@ import Sidebar from "./components/Sidebar";
 import Product from "./pages/Product";
 
 const Views = () => {
+  const sideBarTrigger = useRef();
+
+  const closeSideBar = () => {
+    sideBarTrigger.current.checked = false;
+  };
+
   return (
     <Router>
       <Routes>
@@ -18,8 +24,8 @@ const Views = () => {
           path="/"
           element={
             <div className="container">
-              <input id="sidebar-switch" type="checkbox" />
-              <Sidebar />
+              <input ref={sideBarTrigger} id="sidebar-switch" type="checkbox" />
+              <Sidebar closeSideBar={closeSideBar} />
 
               <Outlet />
               <div className="sidebar-switch-panel"></div>

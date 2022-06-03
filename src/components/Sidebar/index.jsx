@@ -1,10 +1,28 @@
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect, useCallback } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
 import "./style.scss";
 
-const Sidebar = () => {
-  const [clickTarget, setClickTarget] = useState("訂單");
+const Sidebar = (props) => {
+  const [clickTarget, setClickTarget] = useState();
+
+  const location = useLocation();
   const navigate = useNavigate();
+
+  const { closeSideBar } = props;
+
+  const getCurrentPathName = useCallback(() => {
+    if (location.pathname === "/") {
+      return "訂單";
+    }
+
+    if (location.pathname === "/product") {
+      return "產品";
+    }
+  }, [location.pathname]);
+
+  useEffect(() => {
+    setClickTarget(getCurrentPathName());
+  }, [getCurrentPathName]);
 
   return (
     <nav className="sidebar">
@@ -12,7 +30,6 @@ const Sidebar = () => {
         <i className="bx bx-x bx-md"></i>
       </label>
       <div className="header">
-        {/* <img src="https://picsum.photos/seed/1/100/100" alt="" /> */}
         <span className="content">日夫先生</span>
       </div>
       <div className="main">
@@ -21,7 +38,8 @@ const Sidebar = () => {
             className={clickTarget === "訂單" ? "sidebar-active" : ""}
             onClick={() => {
               setClickTarget("訂單");
-              navigate("/order");
+              navigate("/");
+              closeSideBar();
             }}
           >
             <i className="bx bx-home-alt-2 "></i>
@@ -32,6 +50,7 @@ const Sidebar = () => {
             onClick={() => {
               setClickTarget("產品");
               navigate("/product");
+              closeSideBar();
             }}
           >
             <i className="bx bxs-book-content"></i>
