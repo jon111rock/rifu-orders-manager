@@ -23,11 +23,12 @@ const ListPanel = (props) => {
 
   useEffect(() => {
     filterList();
-  }, [filterList]);
+  }, [filterList, selectedPage]);
 
   return (
     <div className="main">
       <Pagination
+        orders={orders}
         getCurrentPageName={(name) => {
           setSelectedPage(name);
         }}
