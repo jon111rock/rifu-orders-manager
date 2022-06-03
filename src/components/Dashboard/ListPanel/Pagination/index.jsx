@@ -49,7 +49,7 @@ const Pagination = (props) => {
             className={`${currentPage === "已完成" ? "active" : ""}`}
             onClick={() => setPage("已完成")}
           >
-            已完成
+            已完成{" "}
             <span>
               {orders ? getOrdersCountByState(orders, "已完成") : "0"}
             </span>
