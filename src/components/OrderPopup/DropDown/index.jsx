@@ -1,11 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "./style.scss";
 
-function DropDown(props) {
-  const [active, setActive] = useState();
-  const [itemDatas, setItemDatas] = useState();
+const baseUrl = process.env.REACT_APP_BASE_URL;
 
+function DropDown(props) {
+  const searchRef = useRef();
+
+  const [active, setActive] = useState();
+  const [itemList, setItemList] = useState();
+  const [displayList, setDisplayList] = useState();
   const handleSelectItem = (item) => {
     if (props.getItemData) {
       //changed item
@@ -20,12 +24,33 @@ function DropDown(props) {
     setActive(false);
   };
 
+  const handleSearch = (e) => {
+    // setSearchValue(e.target.value);
+
+    //filter itemList
+    if (!itemList) return;
+    const newList = itemList.filter((item) =>
+      item.name.includes(e.target.value)
+    );
+    setDisplayList(newList);
+  };
+
+  //GET itemList
   useEffect(() => {
     axios
-      .get("http://localhost:3500/api/item")
+      .get(`${baseUrl}/api/item`)
       .then((res) => res.data.result)
-      .then((items) => setItemDatas(items));
+      .then((items) => {
+        setItemList(items);
+        setDisplayList(items);
+      });
   }, []);
+
+  //clearUp searchRef value
+  useEffect(() => {
+    searchRef.current.value = "";
+    setDisplayList(itemList);
+  }, [active, itemList]);
 
   return (
     <div
@@ -37,7 +62,14 @@ function DropDown(props) {
       <div className="dropdown-btn">{props.children}</div>
       <div className={`dropdown-list ${active ? "active z-index-2" : ""}`}>
         <div className="dropdown-search">
-          <input type="text" placeholder="Search" />
+          <input
+            ref={searchRef}
+            type="text"
+            placeholder="Search"
+            onChange={(e) => {
+              handleSearch(e);
+            }}
+          />
           <i
             className="bx bx-x bx-md"
             onMouseDown={() => {
@@ -47,9 +79,9 @@ function DropDown(props) {
         </div>
         <div className="dropdown-items">
           <ul>
-            {itemDatas ? (
+            {displayList ? (
               //DropDown item
-              itemDatas.map((item) => {
+              displayList.map((item) => {
                 return (
                   <li
                     key={item._id}
