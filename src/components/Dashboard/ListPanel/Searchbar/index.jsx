@@ -4,18 +4,22 @@ const Searchbar = () => {
   return (
     <div className="searchbar">
       <div className="search">
-        <i className="bx bx-search bx-sm"></i>
-        <input type="text" />
+        <div className="s-dropdown-container">
+          <div className="s-dropdown-btn">
+            <i className="bx bx-search bx-sm"></i>
+            <input type="text" placeholder="依姓名搜尋" />
+            <i className="bx bxs-down-arrow"></i>
+          </div>
+          <ul className="s-dropdown-list active">
+            <li className="s-dropdown-item">item 1</li>
+            <li className="s-dropdown-item">item 2</li>
+          </ul>
+        </div>
       </div>
       <div className="`control">
-        {/* <div className="filter">
-          <i className="bx bx-filter bx-sm"></i>
-        </div> */}
+        {/*         
         <div className="revision">
           <i className="bx bx-revision bx-sm"></i>
-        </div>
-        {/* <div className="export">
-          <i className="bx bx-export bx-sm"></i>
         </div> */}
       </div>
     </div>
