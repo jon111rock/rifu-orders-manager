@@ -7,23 +7,32 @@ import OrdersCard from "./OrdersCard";
 import { AppContext } from "../../../pages/Order";
 
 const ListPanel = (props) => {
-  const orders = useContext(AppContext).orders;
+  let orders = useContext(AppContext).orders;
 
   const [selectedPage, setSelectedPage] = useState();
   const [displayList, setDisplayList] = useState();
 
+  const [searchPattern, setSearchPattern] = useState();
+  const [searchValue, setSearchValue] = useState();
+
   const filterList = useCallback(() => {
+    //filter by search
+    if (!orders || !searchPattern) return;
+    const newOrders = orders.filter((order) =>
+      order.user[searchPattern].includes(searchValue)
+    );
+    //filter by Page
     if (selectedPage && selectedPage !== "所有訂單") {
-      const result = orders.filter((order) => order.state === selectedPage);
+      const result = newOrders.filter((order) => order.state === selectedPage);
       setDisplayList(result);
     } else {
-      setDisplayList(orders);
+      setDisplayList(newOrders);
     }
-  }, [selectedPage, orders]);
+  }, [selectedPage, orders, searchPattern, searchValue]);
 
   useEffect(() => {
     filterList();
-  }, [filterList, selectedPage]);
+  }, [filterList, selectedPage, searchPattern, searchValue]);
 
   return (
     <div className="main">
@@ -31,10 +40,16 @@ const ListPanel = (props) => {
         orders={orders}
         getCurrentPageName={(name) => {
           setSelectedPage(name);
+          // filterList();
         }}
       />
 
-      <Searchbar />
+      <Searchbar
+        onChange={(pattern, value) => {
+          setSearchPattern(pattern);
+          setSearchValue(value);
+        }}
+      />
 
       <OrdersTable
         displayList={displayList}

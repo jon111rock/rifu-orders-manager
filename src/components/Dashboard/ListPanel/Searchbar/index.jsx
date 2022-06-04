@@ -1,11 +1,32 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 
-const drowDownList = ["依姓名搜尋", "依住址搜尋", "依電話搜尋"];
+const drowDownList = [
+  { name: "依姓名搜尋", pattern: "name" },
+  { name: "依住址搜尋", pattern: "address" },
+  { name: "依電話搜尋", pattern: "phone_number" },
+];
 
-const Searchbar = () => {
+const Searchbar = (props) => {
   const dropdownRef = useRef();
+  const inputRef = useRef();
+
   const [isOpenDropdown, setIsOpenDropdown] = useState(false);
   const [searchMode, setSearchMode] = useState(drowDownList[0]);
+  const [searchValue, setSearchValue] = useState("");
+
+  const { onChange } = props;
+
+  //callback when searchValue change
+  useEffect(() => {
+    onChange(searchMode.pattern, searchValue);
+  }, [onChange, searchMode, searchValue]);
+
+  //clearup input when change mode
+  useEffect(() => {
+    if (!inputRef || !searchMode) return;
+    inputRef.current.value = "";
+    setSearchValue("");
+  }, [searchMode]);
 
   return (
     <div
@@ -20,7 +41,15 @@ const Searchbar = () => {
         <div className="s-dropdown-container">
           <div className="s-dropdown-btn">
             <i className="bx bx-search bx-sm"></i>
-            <input type="text" placeholder={searchMode} />
+            <input
+              ref={inputRef}
+              type="text"
+              placeholder={searchMode.name}
+              defaultValue={searchValue}
+              onChange={(e) => {
+                setSearchValue(e.target.value);
+              }}
+            />
             <i
               ref={dropdownRef}
               className="bx bxs-down-arrow"
@@ -38,7 +67,7 @@ const Searchbar = () => {
                   setSearchMode(drowDownList[key]);
                 }}
               >
-                {item}
+                {item.name}
               </li>
             ))}
           </ul>
