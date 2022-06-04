@@ -193,9 +193,11 @@
             }
 
             .bxs-down-arrow {
+              cursor: pointer;
+
               position: absolute;
               right: 12px;
-              top: 8px;
+              top: 10px;
               color: $text-color;
             }
 
