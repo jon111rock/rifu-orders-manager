@@ -64,14 +64,16 @@ const OrdersTable = (props) => {
               );
             })
           ) : (
-            <tr></tr>
+            <div className="loading">
+              <i className="bx bx-loader-alt bx-spin bx-lg"></i>
+            </div>
           )}
         </tbody>
       </table>
       <div className="orders-page">
-        <i class="bx bx-chevron-left bx-md"></i>
+        <i className="bx bx-chevron-left bx-md"></i>
         <span className="page">1</span>
-        <i class="bx bx-chevron-right bx-md"></i>
+        <i className="bx bx-chevron-right bx-md"></i>
       </div>
     </div>
   );

@@ -281,6 +281,8 @@
 
         border-collapse: collapse;
 
+        text-align: center;
+
         th,
         td {
           padding: 1rem;
@@ -299,17 +301,25 @@
           th {
             position: sticky;
             top: 0;
-            text-align: start;
+            // text-align: start;
             background-color: $tertiary-color;
           }
         }
 
         tbody {
+          position: relative;
           td {
             cursor: pointer;
           }
+
           tr:hover {
             background-color: rgba(0, 0, 0, 0.03);
+          }
+
+          .loading {
+            position: absolute;
+            left: 50%;
+            top: 20%;
           }
         }
       }
@@ -447,21 +457,7 @@
 // height
 @media (max-height: 900px) {
   html {
-    font-size: 90%;
-  }
-
-  .dashboard {
-    .main {
-      .orders-container {
-        height: 100%;
-      }
-    }
-  }
-}
-
-@media (max-height: 845px) {
-  html {
-    font-size: 80%;
+    font-size: 70%;
   }
 }
 
