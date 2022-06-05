@@ -263,9 +263,13 @@ const OrderPopup = (props) => {
           </ul>
           <div className="orders-area">
             <div className="orders-list">
-              {detailList.map((detail) => {
+              {detailList.map((detail, key) => {
+                if (!detail._id) {
+                  // console.log("id not found");
+                  detail._id = key;
+                }
                 if (!detail.item) {
-                  detail.item = { name: "找不到", price: 999 };
+                  detail.item = { name: "not found", price: 999 };
                 }
                 return (
                   <OrderItem

@@ -7,7 +7,6 @@
   margin: 0;
   padding: 0;
 }
-//utility todo: state class
 
 .container {
   display: flex;
@@ -175,34 +174,72 @@
     .searchbar {
       width: 100%;
       background-color: $primary-color;
-      display: grid;
-      grid-template-columns: 20fr 1fr;
-      justify-content: space-between;
-      align-items: center;
+
       padding: 0.5rem;
       border-radius: 10px;
 
       .search {
-        position: relative;
-
-        i {
-          position: absolute;
-          left: 12px;
-          top: 8px;
-          color: $text-color;
-        }
-
-        input {
+        .s-dropdown-container {
+          position: relative;
           width: 50%;
-          font-size: 1rem;
-          border: 1px solid $secondary-color;
-          border-radius: 8px;
-          padding: 0.5rem 0.5rem 0.5rem 3rem;
-        }
 
-        input:focus {
-          outline: none !important;
-          border: 2px solid $active-color;
+          .s-dropdown-btn {
+            .bx-search {
+              position: absolute;
+              left: 12px;
+              top: 8px;
+              color: $text-color;
+            }
+
+            .bxs-down-arrow {
+              cursor: pointer;
+
+              position: absolute;
+              right: 12px;
+              top: 10px;
+              color: $text-color;
+            }
+
+            input {
+              width: 100%;
+              font-size: 1rem;
+              border: 1px solid $secondary-color;
+              border-radius: 8px;
+              padding: 0.5rem 0.5rem 0.5rem 3rem;
+            }
+
+            input:focus {
+              outline: none !important;
+              border: 2px solid $active-color;
+            }
+
+            input::placeholder {
+              color: rgba(0, 0, 0, 0.3);
+            }
+          }
+
+          .s-dropdown-list {
+            display: none;
+
+            position: absolute;
+            width: 100%;
+            z-index: 2;
+            background-color: white;
+            margin-top: 5px;
+
+            list-style: none;
+            border-radius: 10px;
+            box-shadow: 0 0 5px 0.1px gray;
+
+            .s-dropdown-item {
+              color: gray !important;
+              padding: 0.6rem;
+            }
+
+            .s-dropdown-item:hover {
+              background-color: rgba(0, 0, 0, 0.1);
+            }
+          }
         }
       }
 

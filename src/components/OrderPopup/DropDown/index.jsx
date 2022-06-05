@@ -1,11 +1,15 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import axios from "axios";
 import "./style.scss";
 
-function DropDown(props) {
-  const [active, setActive] = useState();
-  const [itemDatas, setItemDatas] = useState();
+const baseUrl = process.env.REACT_APP_BASE_URL;
 
+function DropDown(props) {
+  const searchRef = useRef();
+
+  const [active, setActive] = useState();
+  const [itemList, setItemList] = useState();
+  const [displayList, setDisplayList] = useState();
   const handleSelectItem = (item) => {
     if (props.getItemData) {
       //changed item
@@ -20,12 +24,50 @@ function DropDown(props) {
     setActive(false);
   };
 
+  const handleSearch = (e) => {
+    // setSearchValue(e.target.value);
+
+    //filter itemList
+    if (!itemList) return;
+
+    const inputValue = e.target.value;
+    const newList = itemList.reduce((filtered, item) => {
+      if (item.name.includes(inputValue)) {
+        if (inputValue === "") {
+          filtered.push(item);
+        } else {
+          const joinHtml = `<span style="background-color:yellow;">${inputValue}</span>`;
+          const newName = item.name.split(inputValue).join(joinHtml);
+          const tempItem = { ...item };
+
+          tempItem.displayName = newName;
+          filtered.push(tempItem);
+        }
+      }
+      return filtered;
+    }, []);
+    setDisplayList(newList);
+  };
+
+  //GET itemList
   useEffect(() => {
     axios
-      .get("http://localhost:3500/api/item")
+      .get(`${baseUrl}/api/item`)
       .then((res) => res.data.result)
-      .then((items) => setItemDatas(items));
+      .then((items) => {
+        for (let i in items) {
+          items[i].displayName = items[i].name;
+        }
+        setItemList(items);
+        setDisplayList(items);
+      });
   }, []);
+
+  //clearUp searchRef value
+  useEffect(() => {
+    searchRef.current.value = "";
+    setDisplayList(itemList);
+  }, [active, itemList]);
 
   return (
     <div
@@ -37,7 +79,14 @@ function DropDown(props) {
       <div className="dropdown-btn">{props.children}</div>
       <div className={`dropdown-list ${active ? "active z-index-2" : ""}`}>
         <div className="dropdown-search">
-          <input type="text" placeholder="Search" />
+          <input
+            ref={searchRef}
+            type="text"
+            placeholder="依名稱搜尋"
+            onChange={(e) => {
+              handleSearch(e);
+            }}
+          />
           <i
             className="bx bx-x bx-md"
             onMouseDown={() => {
@@ -47,9 +96,9 @@ function DropDown(props) {
         </div>
         <div className="dropdown-items">
           <ul>
-            {itemDatas ? (
+            {displayList ? (
               //DropDown item
-              itemDatas.map((item) => {
+              displayList.map((item) => {
                 return (
                   <li
                     key={item._id}
@@ -57,7 +106,9 @@ function DropDown(props) {
                       handleSelectItem(item);
                     }}
                   >
-                    <span>{item.name}</span>
+                    <span
+                      dangerouslySetInnerHTML={{ __html: item.displayName }}
+                    ></span>
                     <span>${item.price}</span>
                   </li>
                 );
