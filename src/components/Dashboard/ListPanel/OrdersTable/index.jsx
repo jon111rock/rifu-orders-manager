@@ -42,9 +42,20 @@ const OrdersTable = (props) => {
                   }}
                 >
                   <td>{item._id}</td>
-                  <td>{item.user.name}</td>
-                  <td>{item.user.address}</td>
-                  <td>{item.user.phone_number}</td>
+                  <td
+                    dangerouslySetInnerHTML={{ __html: item.displayUser.name }}
+                  ></td>
+                  <td
+                    dangerouslySetInnerHTML={{
+                      __html: item.displayUser.address,
+                    }}
+                  ></td>
+                  <td
+                    dangerouslySetInnerHTML={{
+                      __html: item.displayUser.phone_number,
+                    }}
+                  ></td>
+
                   <td>{item.date}</td>
                   <td>
                     <div className={state}>{item.state}</div>

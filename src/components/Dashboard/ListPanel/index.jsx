@@ -17,11 +17,30 @@ const ListPanel = (props) => {
 
   const filterList = useCallback(() => {
     if (!orders || !searchPattern) return;
+    for (let i in orders) {
+      orders[i].displayUser = { ...orders[i].user };
+    }
+    // filter by search
+    // const newOrders = orders.filter((order) =>
+    //   order.user[searchPattern].includes(searchValue)
+    // );
+    const newOrders = orders.reduce((filtered, order) => {
+      if (order.user[searchPattern].includes(searchValue)) {
+        if (searchValue === "") {
+          filtered.push(order);
+        } else {
+          const joinHtml = `<span style="background-color:yellow;">${searchValue}</span>`;
+          const newStr = order.user[searchPattern]
+            .split(searchValue)
+            .join(joinHtml);
 
-    //filter by search
-    const newOrders = orders.filter((order) =>
-      order.user[searchPattern].includes(searchValue)
-    );
+          order.displayUser[searchPattern] = newStr;
+          filtered.push(order);
+        }
+      }
+      return filtered;
+    }, []);
+
     //filter by Page
     if (selectedPage && selectedPage !== "所有訂單") {
       const result = newOrders.filter((order) => order.state === selectedPage);
