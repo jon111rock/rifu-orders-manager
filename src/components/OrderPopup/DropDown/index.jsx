@@ -29,9 +29,23 @@ function DropDown(props) {
 
     //filter itemList
     if (!itemList) return;
-    const newList = itemList.filter((item) =>
-      item.name.includes(e.target.value)
-    );
+
+    const inputValue = e.target.value;
+    const newList = itemList.reduce((filtered, item) => {
+      if (item.name.includes(inputValue)) {
+        if (inputValue === "") {
+          filtered.push(item);
+        } else {
+          const joinHtml = `<span style="background-color:yellow;">${inputValue}</span>`;
+          const newName = item.name.split(inputValue).join(joinHtml);
+          const tempItem = { ...item };
+
+          tempItem.displayName = newName;
+          filtered.push(tempItem);
+        }
+      }
+      return filtered;
+    }, []);
     setDisplayList(newList);
   };
 
@@ -41,6 +55,9 @@ function DropDown(props) {
       .get(`${baseUrl}/api/item`)
       .then((res) => res.data.result)
       .then((items) => {
+        for (let i in items) {
+          items[i].displayName = items[i].name;
+        }
         setItemList(items);
         setDisplayList(items);
       });
@@ -65,7 +82,7 @@ function DropDown(props) {
           <input
             ref={searchRef}
             type="text"
-            placeholder="Search"
+            placeholder="依名稱搜尋"
             onChange={(e) => {
               handleSearch(e);
             }}
@@ -89,7 +106,9 @@ function DropDown(props) {
                       handleSelectItem(item);
                     }}
                   >
-                    <span>{item.name}</span>
+                    <span
+                      dangerouslySetInnerHTML={{ __html: item.displayName }}
+                    ></span>
                     <span>${item.price}</span>
                   </li>
                 );

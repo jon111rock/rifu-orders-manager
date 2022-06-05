@@ -7,7 +7,7 @@ import OrdersCard from "./OrdersCard";
 import { AppContext } from "../../../pages/Order";
 
 const ListPanel = (props) => {
-  let orders = useContext(AppContext).orders;
+  const orders = useContext(AppContext).orders;
 
   const [selectedPage, setSelectedPage] = useState();
   const [displayList, setDisplayList] = useState();
@@ -16,8 +16,9 @@ const ListPanel = (props) => {
   const [searchValue, setSearchValue] = useState();
 
   const filterList = useCallback(() => {
-    //filter by search
     if (!orders || !searchPattern) return;
+
+    //filter by search
     const newOrders = orders.filter((order) =>
       order.user[searchPattern].includes(searchValue)
     );
