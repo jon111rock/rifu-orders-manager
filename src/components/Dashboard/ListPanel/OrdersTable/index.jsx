@@ -5,8 +5,8 @@ const OrdersTable = (props) => {
   const orders = props.displayList;
 
   return (
-    <div className="orders-table">
-      <table>
+    <div className="orders-container">
+      <table className="orders-table">
         <thead>
           <tr>
             {tableHeads.map((item, key) => {
@@ -68,6 +68,7 @@ const OrdersTable = (props) => {
           )}
         </tbody>
       </table>
+      <div className="orders-page">page</div>
     </div>
   );
 };
