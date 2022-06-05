@@ -42,6 +42,7 @@ const Searchbar = (props) => {
           <div className="s-dropdown-btn">
             <i className="bx bx-search bx-sm"></i>
             <input
+              autoComplete="none"
               ref={inputRef}
               type="text"
               placeholder={searchMode.name}

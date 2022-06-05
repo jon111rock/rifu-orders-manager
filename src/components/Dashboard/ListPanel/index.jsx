@@ -20,10 +20,6 @@ const ListPanel = (props) => {
     for (let i in orders) {
       orders[i].displayUser = { ...orders[i].user };
     }
-    // filter by search
-    // const newOrders = orders.filter((order) =>
-    //   order.user[searchPattern].includes(searchValue)
-    // );
     const newOrders = orders.reduce((filtered, order) => {
       if (order.user[searchPattern].includes(searchValue)) {
         if (searchValue === "") {
