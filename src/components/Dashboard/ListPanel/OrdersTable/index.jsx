@@ -68,7 +68,11 @@ const OrdersTable = (props) => {
           )}
         </tbody>
       </table>
-      <div className="orders-page">page</div>
+      <div className="orders-page">
+        <i class="bx bx-chevron-left bx-md"></i>
+        <span className="page">1</span>
+        <i class="bx bx-chevron-right bx-md"></i>
+      </div>
     </div>
   );
 };
