@@ -272,6 +272,8 @@
     .orders-container {
       // background-color: red;
       height: 100%;
+      display: flex;
+      flex-direction: column;
 
       .orders-table {
         width: 100%;
@@ -311,7 +313,6 @@
           }
         }
       }
-
       .orders-page {
         display: flex;
         justify-content: center;
