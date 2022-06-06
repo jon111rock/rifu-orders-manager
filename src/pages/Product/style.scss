@@ -69,3 +69,12 @@
     display: block;
   }
 }
+
+@media (max-width: 560px) {
+  .product-header {
+    font-size: 1.5rem;
+  }
+  .product-container {
+    font-size: 1.5rem;
+  }
+}

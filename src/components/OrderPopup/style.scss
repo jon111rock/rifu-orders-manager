@@ -63,7 +63,6 @@
         display: flex;
         flex-direction: column;
         gap: 1.5rem;
-
         // padding: 2rem;
 
         .input-field-item {
@@ -148,9 +147,30 @@
   }
 }
 
+//mobile
 @media (max-width: 650px) {
+  html {
+    height: -webkit-fill-available;
+  }
+
+  .popup-input {
+    input {
+      font-size: 1.5rem;
+    }
+  }
+
+  .popup-btn {
+    font-size: 1.5rem;
+  }
+
   .popup {
+    display: block;
     .popup-inner {
+      font-size: 1.5rem;
+      margin: 0;
+      height: -webkit-fill-available;
+
+      padding: 5rem 2rem;
       .input-group {
         display: flex;
         flex-direction: column;
@@ -163,10 +183,10 @@
   }
 }
 
-@media (max-height: 830px) {
-  .popup {
-    .popup-inner {
-      height: 650px;
-    }
-  }
-}
+// @media (max-height: 830px) {
+//   .popup {
+//     .popup-inner {
+//       height: 650px;
+//     }
+//   }
+// }

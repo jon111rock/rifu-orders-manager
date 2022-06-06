@@ -12,7 +12,7 @@ const Header = (props) => {
       </label>
       <h2>訂單</h2>
       <div className="notification">
-        <i className="bx bx-bell bx-md"></i>
+        {/* <i className="bx bx-bell bx-md"></i> */}
         <div className="add-order" onClick={openOrderPopup}>
           <i className="bx bx-plus bx-sm"></i>
           <span>新增訂單</span>
