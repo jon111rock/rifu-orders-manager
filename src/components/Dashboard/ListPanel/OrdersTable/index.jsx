@@ -1,59 +1,23 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import tableHeads from "./tableHeads";
 
-const ORDER_PER_PAGE = 8;
+// const ORDER_PER_PAGE = 8;
 
 const OrdersTable = (props) => {
   const orders = props.displayList;
+  const onSelectPageNum = props.onSelectPageNum;
+  const maxPage = props.maxPage;
+  const currentPageNumber = props.currentPageNumber;
+
   const [pageArray, setPageArray] = useState([1]);
-  const [currentPageNumber, setCurrentPageNumber] = useState(1);
-  const [displayList, setDisplayList] = useState([]);
 
-  const fillEmptyToList = (list) => {
-    if (!list || list.length >= ORDER_PER_PAGE) return list;
-    let tempList = JSON.parse(JSON.stringify(list));
-    while (tempList.length < ORDER_PER_PAGE) {
-      tempList.push({});
-    }
-    return tempList;
-  };
-
-  const filterListByPageNum = useCallback(
-    (list) => {
-      if (!list) return;
-
-      return list.slice(
-        (currentPageNumber - 1) * ORDER_PER_PAGE,
-        currentPageNumber * ORDER_PER_PAGE
-      );
-    },
-    [currentPageNumber]
-  );
-
-  //compute total page num
   useEffect(() => {
-    if (!orders) return;
     let pageAry = [];
-    const maxPage = Math.ceil(orders.length / ORDER_PER_PAGE);
     for (let i = 0; i < maxPage; i++) {
       pageAry.push(i + 1);
     }
-    if (pageAry.length <= 0) {
-      setPageArray([1]);
-    } else {
-      setPageArray(pageAry);
-    }
-  }, [orders]);
-
-  //compute displayOrder by current page number
-  useEffect(() => {
-    setDisplayList(fillEmptyToList(filterListByPageNum(orders)));
-  }, [filterListByPageNum, currentPageNumber, orders]);
-
-  //set pageNumber when change pagination
-  useEffect(() => {
-    setCurrentPageNumber(1);
-  }, [props.selectedPage]);
+    setPageArray(pageAry);
+  }, [maxPage]);
 
   return (
     <div className="orders-container">
@@ -66,8 +30,8 @@ const OrdersTable = (props) => {
           </tr>
         </thead>
         <tbody>
-          {displayList ? (
-            displayList.map((item, key) => {
+          {orders ? (
+            orders.map((item, key) => {
               if (!item._id)
                 return (
                   <tr key={key}>
@@ -135,7 +99,7 @@ const OrdersTable = (props) => {
           <span
             className={`page ${currentPageNumber === num ? "selected" : ""}`}
             onClick={() => {
-              setCurrentPageNumber(num);
+              onSelectPageNum(num);
             }}
             key={key}
           >
