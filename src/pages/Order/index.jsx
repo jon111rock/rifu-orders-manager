@@ -6,6 +6,8 @@ import axios from "axios";
 
 export const AppContext = React.createContext();
 
+const baseUrl = process.env.REACT_APP_BASE_URL;
+
 const Order = () => {
   const [orderPopupTrigger, setOrderPopupTrigger] = useState(false);
   const [ordersData, setOrdersData] = useState();
@@ -13,7 +15,7 @@ const Order = () => {
   const [isUpdateExistOrder, setIsUpdateExistOrder] = useState(false);
 
   const fetechOrdersData = () => {
-    axios.get("http://localhost:3500/api/order").then((res) => {
+    axios.get(`${baseUrl}/api/order`).then((res) => {
       setOrdersData(res.data.result);
     });
   };
