@@ -13,9 +13,15 @@ import Product from "./pages/Product";
 const Views = () => {
   const sideBarTrigger = useRef();
   const [isSideBarOpen, setIsSideBarOpen] = useState(false);
+  const [isOrderPopOpen, setIsOrderPopOpen] = useState(false);
 
   const closeSideBar = () => {
     sideBarTrigger.current.checked = false;
+    setIsSideBarOpen(false);
+  };
+
+  const getIsOrderPopOpen = (state) => {
+    setIsOrderPopOpen(state);
   };
 
   return (
@@ -25,7 +31,9 @@ const Views = () => {
           path="/"
           element={
             <div
-              className={`container ${isSideBarOpen ? "overflow-hidden" : ""}`}
+              className={`container ${
+                isSideBarOpen || isOrderPopOpen ? "overflow-hidden" : ""
+              }`}
             >
               <input
                 ref={sideBarTrigger}
@@ -42,7 +50,10 @@ const Views = () => {
             </div>
           }
         >
-          <Route path="" element={<Dashboard />} />
+          <Route
+            path=""
+            element={<Dashboard getIsOrderPopOpen={getIsOrderPopOpen} />}
+          />
           <Route path="product" element={<Product />} />
         </Route>
         <Route path="*" element={<Navigate to="/" />} replace />

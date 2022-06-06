@@ -8,7 +8,7 @@ export const AppContext = React.createContext();
 
 const baseUrl = process.env.REACT_APP_BASE_URL;
 
-const Order = () => {
+const Order = (props) => {
   const [orderPopupTrigger, setOrderPopupTrigger] = useState(false);
   const [ordersData, setOrdersData] = useState();
   const [currentSelectedOrder, setCurrentSelectedOrder] = useState();
@@ -30,6 +30,10 @@ const Order = () => {
   useEffect(() => {
     fetechOrdersData();
   }, []);
+
+  useEffect(() => {
+    props.getIsOrderPopOpen(orderPopupTrigger);
+  }, [orderPopupTrigger, props]);
 
   return (
     <>
