@@ -10,8 +10,8 @@ const OrdersTable = (props) => {
   const [displayList, setDisplayList] = useState([]);
 
   const fillEmptyToList = (list) => {
+    if (!list || list.length >= ORDER_PER_PAGE) return list;
     let tempList = JSON.parse(JSON.stringify(list));
-    if (!tempList || tempList.length >= ORDER_PER_PAGE) return list;
     while (tempList.length < ORDER_PER_PAGE) {
       tempList.push({});
     }
