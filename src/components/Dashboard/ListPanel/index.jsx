@@ -121,7 +121,6 @@ const ListPanel = (props) => {
         orders={orders}
         getCurrentPageName={(name) => {
           setSelectedPage(name);
-          // filterList();
         }}
       />
 
@@ -146,7 +145,12 @@ const ListPanel = (props) => {
       />
 
       {/* <!-- Mobile Card --> */}
-      <OrdersCard displayList={displayList} />
+      <OrdersCard
+        displayList={displayList}
+        onClick={(selectedIndex) => {
+          props.getSelectedOrderIndex(selectedIndex);
+        }}
+      />
     </div>
   );
 };

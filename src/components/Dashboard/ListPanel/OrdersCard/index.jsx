@@ -26,7 +26,13 @@ const OrdersCard = (props) => {
             }
 
             return (
-              <li className="cards-item" key={item._id}>
+              <li
+                className="cards-item"
+                key={item._id}
+                onClick={() => {
+                  props.onClick(item._id);
+                }}
+              >
                 <div className="name">{item.user.name}</div>
                 <div className="address">{item.user.address}</div>
                 <div className="footer">
