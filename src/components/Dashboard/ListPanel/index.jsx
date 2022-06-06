@@ -15,27 +15,37 @@ const ListPanel = (props) => {
   const [searchPattern, setSearchPattern] = useState();
   const [searchValue, setSearchValue] = useState();
 
+  const searchFilter = useCallback(
+    (orders) => {
+      const filteredOrders = orders.reduce((filtered, order) => {
+        if (order.user[searchPattern].includes(searchValue)) {
+          if (searchValue === "") {
+            filtered.push(order);
+          } else {
+            const joinHtml = `<span style="background-color:yellow;">${searchValue}</span>`;
+            const newStr = order.user[searchPattern]
+              .split(searchValue)
+              .join(joinHtml);
+
+            order.displayUser[searchPattern] = newStr;
+            filtered.push(order);
+          }
+        }
+        return filtered;
+      }, []);
+
+      return filteredOrders;
+    },
+    [searchPattern, searchValue]
+  );
+
   const filterList = useCallback(() => {
     if (!orders || !searchPattern) return;
     for (let i in orders) {
       orders[i].displayUser = { ...orders[i].user };
     }
-    const newOrders = orders.reduce((filtered, order) => {
-      if (order.user[searchPattern].includes(searchValue)) {
-        if (searchValue === "") {
-          filtered.push(order);
-        } else {
-          const joinHtml = `<span style="background-color:yellow;">${searchValue}</span>`;
-          const newStr = order.user[searchPattern]
-            .split(searchValue)
-            .join(joinHtml);
-
-          order.displayUser[searchPattern] = newStr;
-          filtered.push(order);
-        }
-      }
-      return filtered;
-    }, []);
+    //filter by search
+    const newOrders = searchFilter(orders);
 
     //filter by Page
     if (selectedPage && selectedPage !== "所有訂單") {
@@ -44,7 +54,7 @@ const ListPanel = (props) => {
     } else {
       setDisplayList(newOrders);
     }
-  }, [selectedPage, orders, searchPattern, searchValue]);
+  }, [selectedPage, orders, searchPattern, searchFilter]);
 
   useEffect(() => {
     filterList();
@@ -69,6 +79,7 @@ const ListPanel = (props) => {
 
       <OrdersTable
         displayList={displayList}
+        selectedPage={selectedPage}
         onClick={(selectedIndex) => {
           props.getSelectedOrderIndex(selectedIndex);
         }}

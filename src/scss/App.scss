@@ -301,18 +301,16 @@
           th {
             position: sticky;
             top: 0;
-            // text-align: start;
             background-color: $tertiary-color;
           }
         }
 
         tbody {
           position: relative;
-          td {
+          .orders-row {
             cursor: pointer;
           }
-
-          tr:hover {
+          .orders-row:hover {
             background-color: rgba(0, 0, 0, 0.03);
           }
 
@@ -329,7 +327,15 @@
         align-items: center;
 
         .page {
+          cursor: pointer;
+          padding: 0 1rem;
+          font-size: 1.3rem;
           font-weight: bold;
+        }
+        .selected {
+          color: blue;
+          background-color: rgba(0, 0, 0, 0.1);
+          border-radius: 10px;
         }
       }
     }
