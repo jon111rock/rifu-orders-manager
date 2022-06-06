@@ -23,6 +23,7 @@ const OrderPopup = (props) => {
   const [total, setTotal] = useState(0);
 
   const [isDeleteOrder, setIsDeleteOrder] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const { setOrderPopupTrigger } = props;
 
@@ -39,6 +40,8 @@ const OrderPopup = (props) => {
     setTotal();
 
     setOrderPopupTrigger(false);
+    setIsLoading(false);
+
     props.setCurrentSelectedOrder(undefined);
     props.setIsUpdateExistOrder(false);
   };
@@ -95,6 +98,7 @@ const OrderPopup = (props) => {
 
   const handleSaveOrder = async () => {
     if (!name || !address || !phoneNumber || !orderDate || !orderType) return;
+    setIsLoading(true);
 
     const tempDetailList = [...detailList].map((detail) => ({
       count: detail.count,
@@ -304,7 +308,11 @@ const OrderPopup = (props) => {
                 刪除
               </button>
               <button className="confirm popup-btn" onClick={handleSaveOrder}>
-                儲存
+                {isLoading ? (
+                  <i className="bx bx-loader-alt bx-spin bx-rotate-90"></i>
+                ) : (
+                  "儲存"
+                )}
               </button>
               <button className="cancel popup-btn" onClick={clearFormAndClose}>
                 取消

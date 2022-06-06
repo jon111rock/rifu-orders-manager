@@ -1,7 +1,13 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./style.scss";
 
 const DeletePopup = (props) => {
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    setIsLoading(false);
+  }, []);
+
   return (
     <div className="d-popup">
       <div className="d-popup-inner">
@@ -10,10 +16,15 @@ const DeletePopup = (props) => {
           <div
             className="popup-btn confirm"
             onClick={() => {
+              setIsLoading(true);
               props.onClick("delete");
             }}
           >
-            刪除
+            {isLoading ? (
+              <i className="bx bx-loader-alt bx-spin bx-rotate-90"></i>
+            ) : (
+              "刪除"
+            )}
           </div>
           <div
             className="popup-btn cancel"
