@@ -1,6 +1,6 @@
 import React, { useRef } from "react";
 import {
-  BrowserRouter as Router,
+  HashRouter as Router,
   Routes,
   Route,
   Outlet,
