@@ -38,7 +38,11 @@ const OrdersTable = (props) => {
     for (let i = 0; i < maxPage; i++) {
       pageAry.push(i + 1);
     }
-    setPageArray(pageAry);
+    if (pageAry.length <= 0) {
+      setPageArray([1]);
+    } else {
+      setPageArray(pageAry);
+    }
   }, [orders]);
 
   //compute displayOrder by current page number
@@ -125,7 +129,7 @@ const OrdersTable = (props) => {
         </tbody>
       </table>
       <div className="orders-page">
-        <i className="bx bx-chevron-left bx-md"></i>
+        <i className="bx bx-chevron-left bx-md page-arrow"></i>
         {pageArray.map((num, key) => (
           <span
             className={`page ${currentPageNumber === num ? "selected" : ""}`}
@@ -137,7 +141,7 @@ const OrdersTable = (props) => {
             {num}
           </span>
         ))}
-        <i className="bx bx-chevron-right bx-md"></i>
+        <i className="bx bx-chevron-right bx-md page-arrow"></i>
       </div>
     </div>
   );
