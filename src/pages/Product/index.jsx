@@ -7,7 +7,7 @@ const baseUrl = process.env.REACT_APP_BASE_URL;
 
 const Product = () => {
   const [isOpenProductPopup, setIsOpenProductPopup] = useState(false);
-  const [productList, setProductList] = useState([]);
+  const [productList, setProductList] = useState();
   const [currentSelectedProduct, setCurrentSelectedProduct] = useState();
 
   //fetechProductData
@@ -42,21 +42,27 @@ const Product = () => {
         </div>
         <div className="product-container">
           <ul className="product-list">
-            {productList.map((product) => {
-              return (
-                <li
-                  className="product-item"
-                  key={product._id}
-                  onClick={() => {
-                    setIsOpenProductPopup(true);
-                    setCurrentSelectedProduct(product);
-                  }}
-                >
-                  <h3>{product.name}</h3>
-                  <h3>$ {product.price}</h3>
-                </li>
-              );
-            })}
+            {productList ? (
+              productList.map((product) => {
+                return (
+                  <li
+                    className="product-item"
+                    key={product._id}
+                    onClick={() => {
+                      setIsOpenProductPopup(true);
+                      setCurrentSelectedProduct(product);
+                    }}
+                  >
+                    <h3>{product.name}</h3>
+                    <h3>$ {product.price}</h3>
+                  </li>
+                );
+              })
+            ) : (
+              <div className="loading">
+                <i className="bx bx-loader-alt bx-spin bx-lg"></i>
+              </div>
+            )}
           </ul>
         </div>
       </div>

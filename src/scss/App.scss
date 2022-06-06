@@ -7,6 +7,7 @@
   margin: 0;
   padding: 0;
 }
+//utility todo: state class
 
 .container {
   display: flex;
@@ -268,15 +269,19 @@
       }
     }
 
-    .orders-table {
-      width: 100%;
-      height: 600px;
-      overflow: auto;
+    .orders-container {
+      // background-color: red;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
 
-      table {
+      .orders-table {
         width: 100%;
+        height: 100%;
+
         border-collapse: collapse;
-        overflow: auto;
+
+        text-align: center;
 
         th,
         td {
@@ -296,18 +301,45 @@
           th {
             position: sticky;
             top: 0;
-            text-align: start;
             background-color: $tertiary-color;
           }
         }
 
         tbody {
-          td {
+          position: relative;
+          .orders-row {
             cursor: pointer;
           }
-          tr:hover {
+          .orders-row:hover {
             background-color: rgba(0, 0, 0, 0.03);
           }
+
+          .loading {
+            position: absolute;
+            left: 50%;
+            top: 20%;
+          }
+        }
+      }
+      .orders-page {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        .page {
+          cursor: pointer;
+          padding: 0 1rem;
+          font-size: 1.3rem;
+          font-weight: bold;
+        }
+        .selected {
+          color: blue;
+          background-color: rgba(0, 0, 0, 0.1);
+          border-radius: 10px;
+        }
+
+        .page-arrow {
+          cursor: pointer;
         }
       }
     }
@@ -319,7 +351,10 @@
 }
 
 //RWD
-@media (max-width: 1200px) {
+@media (max-width: 1220px) {
+  html {
+    font-size: 80%;
+  }
   .sidebar {
     padding: 0 1rem;
     width: 25vw;
@@ -335,13 +370,13 @@
 
 @media (max-width: 1100px) {
   body {
-    font-size: 85%;
+    font-size: 75%;
   }
 }
 
-@media (max-width: 950px) {
+@media (max-width: 1000px) {
   html {
-    font-size: 90%;
+    font-size: 70%;
   }
 }
 
@@ -419,9 +454,6 @@
   }
 
   .dashboard {
-    .header {
-    }
-
     .main {
       .pagination {
         display: grid;
@@ -435,25 +467,7 @@
 // height
 @media (max-height: 900px) {
   html {
-    font-size: 90%;
-  }
-
-  .dashboard {
-    .main {
-      .orders-table {
-        height: 500px;
-      }
-    }
-  }
-}
-
-@media (max-height: 700px) {
-  .dashboard {
-    .main {
-      .orders-table {
-        height: 300px;
-      }
-    }
+    font-size: 70%;
   }
 }
 
