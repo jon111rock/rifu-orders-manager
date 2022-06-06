@@ -6,14 +6,33 @@ import OrdersCard from "./OrdersCard";
 
 import { AppContext } from "../../../pages/Order";
 
+const ORDER_PER_PAGE = 8;
+
 const ListPanel = (props) => {
   const orders = useContext(AppContext).orders;
 
-  const [selectedPage, setSelectedPage] = useState();
+  const [selectedPage, setSelectedPage] = useState("所有訂單");
   const [displayList, setDisplayList] = useState();
 
   const [searchPattern, setSearchPattern] = useState();
   const [searchValue, setSearchValue] = useState();
+
+  const [maxPage, setMaxPage] = useState();
+  const [currentPageNum, setCurrentPageNum] = useState(1);
+
+  const computeMaxPage = (list, orderPerPage) => {
+    if (!list || list.length <= 0) return 1;
+    return Math.ceil(list.length / orderPerPage);
+  };
+
+  const fillEmptyToList = (list, orderPerPage) => {
+    if (!list || list.length >= orderPerPage) return list;
+    let tempList = JSON.parse(JSON.stringify(list));
+    while (tempList.length < orderPerPage) {
+      tempList.push({});
+    }
+    return tempList;
+  };
 
   const searchFilter = useCallback(
     (orders) => {
@@ -39,26 +58,62 @@ const ListPanel = (props) => {
     [searchPattern, searchValue]
   );
 
+  const pageFilter = useCallback((list, selectedPage) => {
+    if (selectedPage === "所有訂單") return list;
+
+    const filteredList = list.filter((order) => order.state === selectedPage);
+    return filteredList;
+  }, []);
+
+  const pageNumFilter = useCallback((list, currentPageNumber) => {
+    if (!list) return;
+
+    return list.slice(
+      (currentPageNumber - 1) * ORDER_PER_PAGE,
+      currentPageNumber * ORDER_PER_PAGE
+    );
+  }, []);
+
   const filterList = useCallback(() => {
     if (!orders || !searchPattern) return;
+
     for (let i in orders) {
       orders[i].displayUser = { ...orders[i].user };
     }
+
     //filter by search
-    const newOrders = searchFilter(orders);
+    let newOrders = searchFilter(orders);
 
     //filter by Page
-    if (selectedPage && selectedPage !== "所有訂單") {
-      const result = newOrders.filter((order) => order.state === selectedPage);
-      setDisplayList(result);
-    } else {
-      setDisplayList(newOrders);
-    }
-  }, [selectedPage, orders, searchPattern, searchFilter]);
+    newOrders = pageFilter(newOrders, selectedPage);
 
+    setMaxPage(computeMaxPage(newOrders, ORDER_PER_PAGE));
+
+    //filter by pageNum
+    newOrders = pageNumFilter(newOrders, currentPageNum);
+
+    newOrders = fillEmptyToList(newOrders, ORDER_PER_PAGE);
+
+    setDisplayList(newOrders);
+  }, [
+    selectedPage,
+    orders,
+    searchPattern,
+    searchFilter,
+    pageFilter,
+    currentPageNum,
+    pageNumFilter,
+  ]);
+
+  //filter list
   useEffect(() => {
     filterList();
-  }, [filterList, selectedPage, searchPattern, searchValue]);
+  }, [filterList]);
+
+  // init page number
+  useEffect(() => {
+    setCurrentPageNum(1);
+  }, [selectedPage]);
 
   return (
     <div className="main">
@@ -80,6 +135,11 @@ const ListPanel = (props) => {
       <OrdersTable
         displayList={displayList}
         selectedPage={selectedPage}
+        maxPage={maxPage}
+        currentPageNumber={currentPageNum}
+        onSelectPageNum={(pageNum) => {
+          setCurrentPageNum(pageNum);
+        }}
         onClick={(selectedIndex) => {
           props.getSelectedOrderIndex(selectedIndex);
         }}
