@@ -131,6 +131,14 @@ const ListPanel = (props) => {
         }}
       />
 
+      {/* <!-- Mobile Card --> */}
+      <OrdersCard
+        displayList={displayList}
+        onClick={(selectedIndex) => {
+          props.getSelectedOrderIndex(selectedIndex);
+        }}
+      />
+
       <OrdersTable
         displayList={displayList}
         selectedPage={selectedPage}
@@ -139,14 +147,6 @@ const ListPanel = (props) => {
         onSelectPageNum={(pageNum) => {
           setCurrentPageNum(pageNum);
         }}
-        onClick={(selectedIndex) => {
-          props.getSelectedOrderIndex(selectedIndex);
-        }}
-      />
-
-      {/* <!-- Mobile Card --> */}
-      <OrdersCard
-        displayList={displayList}
         onClick={(selectedIndex) => {
           props.getSelectedOrderIndex(selectedIndex);
         }}

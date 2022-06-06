@@ -1,4 +1,4 @@
-import React, { useRef } from "react";
+import React, { useRef, useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -12,6 +12,7 @@ import Product from "./pages/Product";
 
 const Views = () => {
   const sideBarTrigger = useRef();
+  const [isSideBarOpen, setIsSideBarOpen] = useState(false);
 
   const closeSideBar = () => {
     sideBarTrigger.current.checked = false;
@@ -23,8 +24,17 @@ const Views = () => {
         <Route
           path="/"
           element={
-            <div className="container">
-              <input ref={sideBarTrigger} id="sidebar-switch" type="checkbox" />
+            <div
+              className={`container ${isSideBarOpen ? "overflow-hidden" : ""}`}
+            >
+              <input
+                ref={sideBarTrigger}
+                id="sidebar-switch"
+                type="checkbox"
+                onChange={(e) => {
+                  setIsSideBarOpen(e.target.checked);
+                }}
+              />
               <Sidebar closeSideBar={closeSideBar} />
 
               <Outlet />
