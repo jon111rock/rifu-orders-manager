@@ -50,6 +50,7 @@ const OrdersTable = (props) => {
     setDisplayList(fillEmptyToList(filterListByPageNum(orders)));
   }, [filterListByPageNum, currentPageNumber, orders]);
 
+  //set pageNumber when change pagination
   useEffect(() => {
     setCurrentPageNumber(1);
   }, [props.selectedPage]);
